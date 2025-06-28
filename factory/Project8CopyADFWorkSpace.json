@@ -1,0 +1,9 @@
+{
+	"name": "Project8CopyADFWorkSpace",
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "05e3fe14-57f2-4919-9033-62baf4186d19",
+		"tenantId": "1bbefbe9-cb9e-4a62-bd10-a2a60b1a28c5"
+	}
+}
