@@ -1,0 +1,16 @@
+{
+	"name": "EAZZY-BT-DATA-FACTORY",
+	"properties": {
+		"globalConfigurations": {
+			"factoryStagingLSReferenceName": "AzureDataLakeStorage1",
+			"factoryStagingLSType": "LinkedServiceReference",
+			"factoryStagingFolderPath": ""
+		}
+	},
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "e4bd455b-0cb4-4c13-885d-5a1d1817e003",
+		"tenantId": "71a2c157-4b30-4caa-bf46-373944d7c3ab"
+	}
+}
