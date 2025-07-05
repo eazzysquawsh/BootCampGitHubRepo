@@ -2,8 +2,8 @@
 	"name": "EAZZY-BT-DATA-FACTORY",
 	"properties": {
 		"globalConfigurations": {
-			"factoryStagingLSReferenceName": "AzureDataLakeStorage1",
-			"factoryStagingLSType": "LinkedServiceReference",
+			"factoryStagingLSReferenceName": "",
+			"factoryStagingLSType": "",
 			"factoryStagingFolderPath": ""
 		}
 	},
