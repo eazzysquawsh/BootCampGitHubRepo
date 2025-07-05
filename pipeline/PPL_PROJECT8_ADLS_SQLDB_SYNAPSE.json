@@ -29,7 +29,9 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -55,6 +57,9 @@
 				]
 			}
 		],
+		"folder": {
+			"name": "Previous_ppl"
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-06-26T02:00:36Z"
 	},
