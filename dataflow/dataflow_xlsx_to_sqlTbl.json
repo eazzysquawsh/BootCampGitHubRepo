@@ -1,0 +1,108 @@
+{
+	"name": "dataflow_xlsx_to_sqlTbl",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_xlsx_Source_Dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "JollyGoodxlsx"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_xlsx_Currency_DataFlow",
+						"type": "DatasetReference"
+					},
+					"name": "CurrencyConversionToDollars"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Sink_DF",
+						"type": "DatasetReference"
+					},
+					"name": "SinkTosqlTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filterMonthTotal"
+				},
+				{
+					"name": "ConvertCurrencyToUSD"
+				},
+				{
+					"name": "LookupCurrencyUSD"
+				},
+				{
+					"name": "derivedColumnTotal"
+				},
+				{
+					"name": "SelectTargetColumn"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Period as date,",
+				"          Product as string,",
+				"          {Unit Price} as double,",
+				"          Currency as string,",
+				"          {Units Sold} as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> JollyGoodxlsx",
+				"source(output(",
+				"          FromCurrency as string,",
+				"          ToCurrency as string,",
+				"          Date as date,",
+				"          ExchangeRate as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CurrencyConversionToDollars",
+				"JollyGoodxlsx filter(Product!='Month Total') ~> filterMonthTotal",
+				"CurrencyConversionToDollars filter(ToCurrency==\"USD\") ~> ConvertCurrencyToUSD",
+				"filterMonthTotal, ConvertCurrencyToUSD lookup(Period == Date",
+				"     && Currency == FromCurrency,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupCurrencyUSD",
+				"LookupCurrencyUSD derive(TotalAmountUSD = round({Unit Price}*{Units Sold}*ExchangeRate, 2)) ~> derivedColumnTotal",
+				"derivedColumnTotal select(mapColumn(",
+				"          Product,",
+				"          {Unit Price},",
+				"          {Units Sold},",
+				"          Date,",
+				"          ExchangeRate,",
+				"          TotalAmountUSD",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectTargetColumn",
+				"SelectTargetColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Product,",
+				"          {Unit Price},",
+				"          {Units Sold},",
+				"          Date,",
+				"          ExchangeRate,",
+				"          TotalAmountUSD",
+				"     )) ~> SinkTosqlTable"
+			]
+		}
+	}
+}

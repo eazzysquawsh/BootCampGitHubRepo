@@ -1,0 +1,33 @@
+{
+	"name": "ds_csv_practice",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_csv_sink_files",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SalesLT_New": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().SalesLT_New",
+					"type": "Expression"
+				},
+				"folderPath": "csv_files_practice",
+				"fileSystem": "adffunctionscontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

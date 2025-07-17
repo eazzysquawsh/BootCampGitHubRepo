@@ -1,0 +1,36 @@
+{
+	"name": "ds_csv_copy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_ForEach_csv_files",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Sales_csv_file": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "DS-Folder"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().Sales_csv_file",
+					"type": "Expression"
+				},
+				"folderPath": "csv_files_adf_copy",
+				"fileSystem": "adffunctionscontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

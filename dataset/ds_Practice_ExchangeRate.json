@@ -1,0 +1,40 @@
+{
+	"name": "ds_Practice_ExchangeRate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Practice_DF",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "ExchangeRates.xlsx",
+				"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData",
+				"fileSystem": "bcdataengrgcontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "FromCurrency",
+				"type": "String"
+			},
+			{
+				"name": "ToCurrency",
+				"type": "String"
+			},
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "ExchangeRate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

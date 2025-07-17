@@ -1,0 +1,24 @@
+{
+	"name": "ds_sql_parameterized",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_sqlTable_Source_Copy",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SalesLT_New": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().SalesLT_New",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

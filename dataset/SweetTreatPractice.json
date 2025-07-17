@@ -1,0 +1,24 @@
+{
+	"name": "SweetTreatPractice",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sink_sqlTable_DF",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"SweetTreat": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().SweetTreat",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,27 @@
+{
+	"name": "ds_for_csvfile_metadata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_for_metadata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DS-Folder"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "csv_files_adf_function1",
+				"fileSystem": "adffunctionscontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

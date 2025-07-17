@@ -1,0 +1,43 @@
+{
+	"name": "ds_xlsx_Currency_DataFlow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_for_DataFlow",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DS-Folder"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "ExchangeRates.xlsx",
+				"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData",
+				"fileSystem": "bcdataengrgcontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "FromCurrency",
+				"type": "String"
+			},
+			{
+				"name": "ToCurrency",
+				"type": "String"
+			},
+			{
+				"name": "Date",
+				"type": "String"
+			},
+			{
+				"name": "ExchangeRate",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

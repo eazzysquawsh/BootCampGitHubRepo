@@ -1,0 +1,52 @@
+{
+	"name": "ds_sqlTable_DataFlow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqlTable_DataFlow",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DS-Folder"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DATE",
+				"type": "date"
+			},
+			{
+				"name": "Product",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UnitPrice",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "UnitSold",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "ExchangeRate",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Sales_LOAD"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

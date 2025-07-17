@@ -1,0 +1,17 @@
+{
+	"name": "sink_df_practice",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sink_sqlTable_DF",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "CurrencyConverter"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

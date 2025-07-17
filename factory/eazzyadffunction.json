@@ -1,0 +1,9 @@
+{
+	"name": "eazzyadffunction",
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "daabf729-7b58-4749-8db3-b038e905a0d7",
+		"tenantId": "71a2c157-4b30-4caa-bf46-373944d7c3ab"
+	}
+}

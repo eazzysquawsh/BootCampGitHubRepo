@@ -1,0 +1,25 @@
+{
+	"name": "Tr_Name_Schedule",
+	"properties": {
+		"description": "Trigger to Runn JellyGoodPipeline",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "ppl_for_data_flow",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2025-07-12T01:50:00",
+				"timeZone": "Central Standard Time"
+			}
+		}
+	}
+}
