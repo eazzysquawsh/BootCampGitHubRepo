@@ -40,19 +40,7 @@
 						},
 						"path": "bcdataengrgcontainer/staging_for_DW_DedPool "
 					}
-				},
-				"inputs": [
-					{
-						"referenceName": "ds_adls_to_synapse",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_AzureSynapseAnalyticsTable1",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			}
 		],
 		"annotations": [],

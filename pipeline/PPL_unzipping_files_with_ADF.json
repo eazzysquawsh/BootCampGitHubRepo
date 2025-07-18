@@ -36,19 +36,7 @@
 						}
 					},
 					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "da_zipped_folder",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ds_zipped_folder",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			}
 		],
 		"folder": {
