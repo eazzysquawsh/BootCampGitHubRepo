@@ -1,0 +1,174 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "eazzyadffunction"
+		},
+		"Ls_sqlTable_Source_Copy_password": {
+			"value": ""
+		},
+		"dessert4alldedpool_connectionString": {
+			"value": ""
+		},
+		"linkedService1_connectionString": {
+			"value": ""
+		},
+		"ls_ForEach_csv_files_accountKey": {
+			"value": ""
+		},
+		"ls_Practice_DF_accountKey": {
+			"value": ""
+		},
+		"ls_Project9_ADLS_accountKey": {
+			"value": ""
+		},
+		"ls_SqlDatabase_copy_password": {
+			"value": ""
+		},
+		"ls_Zipped_Folder_Practice_accountKey": {
+			"value": ""
+		},
+		"ls_adls_adf_copy_accountKey": {
+			"value": ""
+		},
+		"ls_csv_sink_files_accountKey": {
+			"value": ""
+		},
+		"ls_dessert4all_synapse_password": {
+			"value": ""
+		},
+		"ls_for_DataFlow_accountKey": {
+			"value": ""
+		},
+		"ls_for_metadata_accountKey": {
+			"value": ""
+		},
+		"ls_lookup_sql_password": {
+			"value": ""
+		},
+		"ls_metadata_sqldb_password": {
+			"value": ""
+		},
+		"ls_project9_1_accountKey": {
+			"value": ""
+		},
+		"ls_sink_sqlTable_DF_password": {
+			"value": ""
+		},
+		"ls_sink_sqlTables_password": {
+			"value": ""
+		},
+		"ls_sqlTable_DataFlow_password": {
+			"value": ""
+		},
+		"Ls_sqlTable_Source_Copy_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"Ls_sqlTable_Source_Copy_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"Ls_sqlTable_Source_Copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_ForEach_csv_files_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_Practice_DF_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_Project9_ADLS_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_SqlDatabase_copy_properties_typeProperties_server": {
+			"value": "eazzysquawsh.database.windows.net"
+		},
+		"ls_SqlDatabase_copy_properties_typeProperties_database": {
+			"value": "eazzybtcdb"
+		},
+		"ls_SqlDatabase_copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_Zipped_Folder_Practice_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_adls_adf_copy_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_csv_sink_files_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_server": {
+			"value": "project9workspace.sql.azuresynapse.net"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_database": {
+			"value": "desert4alldedpool"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_for_DataFlow_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_for_metadata_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_lookup_sql_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_lookup_sql_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"ls_lookup_sql_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_metadata_sqldb_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_metadata_sqldb_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"ls_metadata_sqldb_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_project9_1_properties_typeProperties_url": {
+			"value": "https://project8strg.dfs.core.windows.net/"
+		},
+		"ls_sink_sqlTable_DF_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_sink_sqlTable_DF_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"ls_sink_sqlTable_DF_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_sqlTable_DataFlow_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_sqlTable_DataFlow_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb"
+		},
+		"ls_sqlTable_DataFlow_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"Project9_Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/c74fd3b2-fc1c-4d03-badb-4ef74f0ff6ce/resourceGroups/eazzyRG/providers/Microsoft.Storage/storageAccounts/project8strg"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
