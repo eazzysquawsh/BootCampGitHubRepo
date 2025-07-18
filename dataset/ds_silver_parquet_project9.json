@@ -1,0 +1,21 @@
+{
+	"name": "ds_silver_parquet_project9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "cleaned_*.parquet",
+				"folderPath": "sales",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": []
+	}
+}
