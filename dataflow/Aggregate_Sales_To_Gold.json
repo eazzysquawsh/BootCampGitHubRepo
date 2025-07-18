@@ -1,0 +1,64 @@
+{
+	"name": "Aggregate_Sales_To_Gold",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_to_gold",
+						"type": "DatasetReference"
+					},
+					"name": "SilvertoGold"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Gold",
+						"type": "DatasetReference"
+					},
+					"name": "Gold"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DessertSilvertoGold",
+					"description": "Total revenue per CustomerID"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesMonth as date,",
+				"          Retailer as string,",
+				"          Product as string,",
+				"          SalesValueUSD as double,",
+				"          UnitsSold as integer,",
+				"          Revenue as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> SilvertoGold",
+				"SilvertoGold aggregate(groupBy(Product),",
+				"     TotalRevenue = sum(Revenue)) ~> DessertSilvertoGold",
+				"DessertSilvertoGold sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Product as string,",
+				"          {Total Revenue} as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Gold"
+			]
+		}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "ds_Gold",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dessert4alldedpool",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Product",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Total Revenue",
+				"type": "float",
+				"precision": 15
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Silver_to_Gold"
+		}
+	}
+}
