@@ -24,7 +24,7 @@
 				"          Retailer as string,",
 				"          Product as string,",
 				"          SalesValueUSD as double,",
-				"          UnitsSold as string",
+				"          UnitsSold as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
