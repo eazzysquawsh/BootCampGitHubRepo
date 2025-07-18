@@ -1,5 +1,5 @@
 {
-	"name": "Aggregate_Sales_To_Gold",
+	"name": "Transform_Sales_To_Silver",
 	"properties": {
 		"activities": [
 			{
