@@ -12,7 +12,15 @@
 					"name": "bronzesource"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Parquet_project9_sink",
+						"type": "DatasetReference"
+					},
+					"name": "Dessert4allSilverSink"
+				}
+			],
 			"transformations": [
 				{
 					"name": "Dessert4allderivedColumn"
@@ -30,7 +38,15 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'parquet') ~> bronzesource",
-				"bronzesource derive(Revenue = SalesValueUSD*UnitsSold) ~> Dessert4allderivedColumn"
+				"bronzesource derive(Revenue = SalesValueUSD*UnitsSold) ~> Dessert4allderivedColumn",
+				"Dessert4allderivedColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> Dessert4allSilverSink"
 			]
 		}
 	}

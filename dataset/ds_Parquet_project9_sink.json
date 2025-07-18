@@ -1,0 +1,19 @@
+{
+	"name": "ds_Parquet_project9_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
