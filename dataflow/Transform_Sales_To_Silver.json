@@ -1,0 +1,37 @@
+{
+	"name": "Transform_Sales_To_Silver",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_parquet_project9",
+						"type": "DatasetReference"
+					},
+					"name": "bronzesource"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "Dessert4allderivedColumn"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesMonth as date,",
+				"          Retailer as string,",
+				"          Product as string,",
+				"          SalesValueUSD as double,",
+				"          UnitsSold as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> bronzesource",
+				"bronzesource derive(Revenue = SalesValueUSD*UnitsSold) ~> Dessert4allderivedColumn"
+			]
+		}
+	}
+}

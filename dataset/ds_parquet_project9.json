@@ -1,0 +1,41 @@
+{
+	"name": "ds_parquet_project9",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "05-20.parquet",
+				"fileSystem": "bronz"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "SalesMonth",
+				"type": "UTF8"
+			},
+			{
+				"name": "Retailer",
+				"type": "UTF8"
+			},
+			{
+				"name": "Product",
+				"type": "UTF8"
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "UTF8"
+			},
+			{
+				"name": "UnitsSold",
+				"type": "UTF8"
+			}
+		]
+	}
+}
