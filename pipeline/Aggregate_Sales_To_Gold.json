@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Silver to Gold Aggregations",
+				"name": "Bronze to Silver",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
