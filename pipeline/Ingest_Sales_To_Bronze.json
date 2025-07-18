@@ -48,7 +48,8 @@
 							"linkedServiceName": {
 								"referenceName": "ls_project9_1",
 								"type": "LinkedServiceReference"
-							}
+							},
+							"path": "loggingfolderpathcontainer"
 						}
 					},
 					"translator": {
