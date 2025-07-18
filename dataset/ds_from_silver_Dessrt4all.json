@@ -1,0 +1,45 @@
+{
+	"name": "ds_from_silver_Dessrt4all",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Cleaned_Dessert4all.parquet",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "SalesMonth",
+				"type": "DATE"
+			},
+			{
+				"name": "Retailer",
+				"type": "UTF8"
+			},
+			{
+				"name": "Product",
+				"type": "UTF8"
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "UnitsSold",
+				"type": "INT32"
+			},
+			{
+				"name": "Revenue",
+				"type": "DOUBLE"
+			}
+		]
+	}
+}

@@ -19,6 +19,13 @@
 						"referenceName": "Aggregate_Sales_To_Gold",
 						"type": "DataFlowReference"
 					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "ls_project9_1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "loggingfolderpathcontainer"
+					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
