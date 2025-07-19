@@ -11,6 +11,9 @@
 		"dessert4alldedpool_connectionString": {
 			"value": ""
 		},
+		"ds_incremental_copy_accountKey": {
+			"value": ""
+		},
 		"linkedService1_connectionString": {
 			"value": ""
 		},
@@ -70,6 +73,9 @@
 		},
 		"Ls_sqlTable_Source_Copy_properties_typeProperties_userName": {
 			"value": "eazzysquawsh"
+		},
+		"ds_incremental_copy_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"

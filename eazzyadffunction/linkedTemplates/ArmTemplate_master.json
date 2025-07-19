@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'dessert4alldedpool'"
 		},
+		"ds_incremental_copy_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ds_incremental_copy'"
+		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
@@ -94,6 +98,10 @@
 		"Ls_sqlTable_Source_Copy_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
+		},
+		"ds_incremental_copy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"type": "string",
@@ -252,6 +260,9 @@
 					"dessert4alldedpool_connectionString": {
 						"value": "[parameters('dessert4alldedpool_connectionString')]"
 					},
+					"ds_incremental_copy_accountKey": {
+						"value": "[parameters('ds_incremental_copy_accountKey')]"
+					},
 					"linkedService1_connectionString": {
 						"value": "[parameters('linkedService1_connectionString')]"
 					},
@@ -311,6 +322,9 @@
 					},
 					"Ls_sqlTable_Source_Copy_properties_typeProperties_userName": {
 						"value": "[parameters('Ls_sqlTable_Source_Copy_properties_typeProperties_userName')]"
+					},
+					"ds_incremental_copy_properties_typeProperties_url": {
+						"value": "[parameters('ds_incremental_copy_properties_typeProperties_url')]"
 					},
 					"ls_ForEach_csv_files_properties_typeProperties_url": {
 						"value": "[parameters('ls_ForEach_csv_files_properties_typeProperties_url')]"
