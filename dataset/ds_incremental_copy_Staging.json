@@ -1,0 +1,23 @@
+{
+	"name": "ds_incremental_copy_Staging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ds_incremental_copy",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Incremental_Copy",
+				"fileSystem": "bcdataengrgcontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
