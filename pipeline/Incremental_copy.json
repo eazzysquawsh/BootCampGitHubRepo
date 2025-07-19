@@ -92,6 +92,14 @@
 				}
 			}
 		],
+		"variables": {
+			"CurrentFile": {
+				"type": "String"
+			},
+			"PreviousFile": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "Incremental_csv_Files"
 		},
