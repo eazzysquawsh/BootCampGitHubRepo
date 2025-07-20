@@ -46,7 +46,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get_metadata_incemental_copy').output.lastModified",
+						"value": "@activity('Get_metadata_incemental_copy').output.childItems",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -118,7 +118,7 @@
 										"typeProperties": {
 											"variableName": "CurrentFile",
 											"value": {
-												"value": "@activity('Get_metadata_incemental_copy').output.childItems",
+												"value": "@activity('Get_Metadata_For_Each_Dynamic').output.itemName",
 												"type": "Expression"
 											}
 										}
@@ -142,7 +142,7 @@
 										"typeProperties": {
 											"variableName": "PreviousFile",
 											"value": {
-												"value": "@activity('Get_metadata_incemental_copy').output.childItems",
+												"value": "@activity('Get_Metadata_For_Each_Dynamic').output.lastModified",
 												"type": "Expression"
 											}
 										}
