@@ -39,7 +39,7 @@
 					{
 						"activity": "Get_metadata_incemental_copy",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
@@ -160,7 +160,7 @@
 					{
 						"activity": "For_Each_Child_Item_incremental",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
