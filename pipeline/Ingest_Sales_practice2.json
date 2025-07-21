@@ -1,9 +1,9 @@
 {
-	"name": "Ingest_Sales_To_Bronze_practice2",
+	"name": "Ingest_Sales_practice2",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_data_project9_practice2",
+				"name": "Landing_practice2",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -72,6 +72,52 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "ppl_Aggregate_Sales_To_Gold_Practice2",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Transform_Sales_To_Silver",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ppl_Aggregate_Sales_To_Gold_Practice2",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Transform_Sales_To_Silver",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Landing_practice2",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Transform_Sales_To_Silver",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"annotations": []
