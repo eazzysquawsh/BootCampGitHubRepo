@@ -1,0 +1,63 @@
+{
+	"name": "dataflow_Silver to Gold_Aggregations_Practice2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Silver_To_Gold_Parquet_Practice2",
+						"type": "DatasetReference"
+					},
+					"name": "SilverToGold"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_TotalRev_Synapse_Practice2",
+						"type": "DatasetReference"
+					},
+					"name": "SilverToGoldPractice2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "TotalrevenueperCustomerIDPractice2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesMonth as date,",
+				"          Retailer as string,",
+				"          Product as string,",
+				"          SalesValueUSD as double,",
+				"          UnitsSold as integer,",
+				"          Revenue as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> SilverToGold",
+				"SilverToGold aggregate(groupBy(Product),",
+				"     Revenue = sum(Revenue)) ~> TotalrevenueperCustomerIDPractice2",
+				"TotalrevenueperCustomerIDPractice2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Product as string,",
+				"          Revenue as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SilverToGoldPractice2"
+			]
+		}
+	}
+}

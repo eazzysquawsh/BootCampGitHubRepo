@@ -1,0 +1,26 @@
+{
+	"name": "ds_TotalRev_Synapse_Practice2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Dessert4all_Practice2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Product",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Revenue",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Dessert4allPractice2"
+		}
+	}
+}
