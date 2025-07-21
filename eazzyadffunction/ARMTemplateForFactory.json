@@ -1018,15 +1018,9 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "ParquetSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "ParquetReadSettings"
-								}
+								"type": "SqlDWSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "SqlDWSink",
@@ -1035,11 +1029,18 @@
 								"tableOption": "autoCreate",
 								"disableMetricsCollection": false
 							},
-							"enableStaging": false
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "ls_project9_1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "gold"
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "ds_Sales_To_Silver_Parquet_Practice2",
+								"referenceName": "ds_TotalRev_Synapse_Practice2",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -1059,8 +1060,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_Sales_To_Silver_Parquet_Practice2')]",
-				"[concat(variables('factoryId'), '/datasets/ds_TotalRev_Synapse_Practice2')]"
+				"[concat(variables('factoryId'), '/datasets/ds_TotalRev_Synapse_Practice2')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
 			]
 		},
 		{
