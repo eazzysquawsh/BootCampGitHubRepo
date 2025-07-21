@@ -17,6 +17,9 @@
 		"linkedService1_connectionString": {
 			"value": ""
 		},
+		"ls_Dessert4all_Practice2_password": {
+			"value": ""
+		},
 		"ls_ForEach_csv_files_accountKey": {
 			"value": ""
 		},
@@ -76,6 +79,15 @@
 		},
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
+			"value": "project9workspace.sql.azuresynapse.net"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_database": {
+			"value": "desert4alldedpool"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_userName": {
+			"value": "sqladminuser"
 		},
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"

@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
 		},
+		"ls_Dessert4all_Practice2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_Dessert4all_Practice2'"
+		},
 		"ls_ForEach_csv_files_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_ForEach_csv_files'"
@@ -102,6 +106,18 @@
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "project9workspace.sql.azuresynapse.net"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "desert4alldedpool"
+		},
+		"ls_Dessert4all_Practice2_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sqladminuser"
 		},
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"type": "string",
@@ -266,6 +282,9 @@
 					"linkedService1_connectionString": {
 						"value": "[parameters('linkedService1_connectionString')]"
 					},
+					"ls_Dessert4all_Practice2_password": {
+						"value": "[parameters('ls_Dessert4all_Practice2_password')]"
+					},
 					"ls_ForEach_csv_files_accountKey": {
 						"value": "[parameters('ls_ForEach_csv_files_accountKey')]"
 					},
@@ -311,9 +330,6 @@
 					"ls_sink_sqlTables_password": {
 						"value": "[parameters('ls_sink_sqlTables_password')]"
 					},
-					"ls_sqlTable_DataFlow_password": {
-						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
-					},
 					"Ls_sqlTable_Source_Copy_properties_typeProperties_server": {
 						"value": "[parameters('Ls_sqlTable_Source_Copy_properties_typeProperties_server')]"
 					},
@@ -325,6 +341,15 @@
 					},
 					"ds_incremental_copy_properties_typeProperties_url": {
 						"value": "[parameters('ds_incremental_copy_properties_typeProperties_url')]"
+					},
+					"ls_Dessert4all_Practice2_properties_typeProperties_server": {
+						"value": "[parameters('ls_Dessert4all_Practice2_properties_typeProperties_server')]"
+					},
+					"ls_Dessert4all_Practice2_properties_typeProperties_database": {
+						"value": "[parameters('ls_Dessert4all_Practice2_properties_typeProperties_database')]"
+					},
+					"ls_Dessert4all_Practice2_properties_typeProperties_userName": {
+						"value": "[parameters('ls_Dessert4all_Practice2_properties_typeProperties_userName')]"
 					},
 					"ls_ForEach_csv_files_properties_typeProperties_url": {
 						"value": "[parameters('ls_ForEach_csv_files_properties_typeProperties_url')]"
@@ -406,15 +431,6 @@
 					},
 					"ls_sink_sqlTables_properties_typeProperties_userName": {
 						"value": "[parameters('ls_sink_sqlTables_properties_typeProperties_userName')]"
-					},
-					"ls_sqlTable_DataFlow_properties_typeProperties_server": {
-						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_server')]"
-					},
-					"ls_sqlTable_DataFlow_properties_typeProperties_database": {
-						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_database')]"
-					},
-					"ls_sqlTable_DataFlow_properties_typeProperties_userName": {
-						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -433,6 +449,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_sqlTable_DataFlow_password": {
+						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
+					},
+					"ls_sqlTable_DataFlow_properties_typeProperties_server": {
+						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_server')]"
+					},
+					"ls_sqlTable_DataFlow_properties_typeProperties_database": {
+						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_database')]"
+					},
+					"ls_sqlTable_DataFlow_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sqlTable_DataFlow_properties_typeProperties_userName')]"
 					}
 				}
 			},
