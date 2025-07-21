@@ -1,0 +1,62 @@
+{
+	"name": "dataflow_Transform_Sales_To_Silver_Practice2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_Sales_To_Silver_Parquet_Practice2",
+						"type": "DatasetReference"
+					},
+					"name": "TransformSalesToSilver"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Sales_To_Silver_Parquet_Practice2",
+						"type": "DatasetReference"
+					},
+					"name": "SinkSilerderivedColumnpractice2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SilerderivedColumnpractice2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          SalesMonth as string,",
+				"          Retailer as string,",
+				"          Product as string,",
+				"          SalesValueUSD as double,",
+				"          UnitsSold as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> TransformSalesToSilver",
+				"TransformSalesToSilver derive(Revenue = SalesValueUSD*UnitsSold) ~> SilerderivedColumnpractice2",
+				"SilerderivedColumnpractice2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SalesMonth as string,",
+				"          Retailer as string,",
+				"          Product as string,",
+				"          SalesValueUSD as string,",
+				"          UnitsSold as string",
+				"     ),",
+				"     format: 'parquet',",
+				"     partitionFileNames:['cleaned_.parquet_Practice2'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> SinkSilerderivedColumnpractice2"
+			]
+		}
+	}
+}

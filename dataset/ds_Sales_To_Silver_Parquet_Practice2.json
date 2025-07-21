@@ -1,0 +1,41 @@
+{
+	"name": "ds_Sales_To_Silver_Parquet_Practice2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Dessert4all.parquet",
+				"fileSystem": "bronz"
+			},
+			"compressionCodec": "none"
+		},
+		"schema": [
+			{
+				"name": "SalesMonth",
+				"type": "UTF8"
+			},
+			{
+				"name": "Retailer",
+				"type": "UTF8"
+			},
+			{
+				"name": "Product",
+				"type": "UTF8"
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "UTF8"
+			},
+			{
+				"name": "UnitsSold",
+				"type": "UTF8"
+			}
+		]
+	}
+}
