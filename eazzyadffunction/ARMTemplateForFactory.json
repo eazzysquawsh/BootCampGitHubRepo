@@ -698,13 +698,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_To_Bronze_practice2')]",
+			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_practice2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy_data_project9_practice2",
+						"name": "Landing_practice2",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -775,6 +775,54 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "ppl_Aggregate_Sales_To_Gold_Practice2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Transform_Sales_To_Silver",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "ppl_Aggregate_Sales_To_Gold_Practice2",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Transform_Sales_To_Silver",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Landing_practice2",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Transform_Sales_To_Silver",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -785,6 +833,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_project9_dlt')]",
 				"[concat(variables('factoryId'), '/datasets/ds_parquet_project9')]",
+				"[concat(variables('factoryId'), '/pipelines/ppl_Aggregate_Sales_To_Gold_Practice2')]",
+				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
 			]
 		},
@@ -835,7 +885,73 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/ppl_Aggregate_Sales_To_Gold_Practice2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Silver_Copydata_To_Gold",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowCopyCommand": true,
+								"copyCommandSettings": {},
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "ls_project9_1",
+									"type": "LinkedServiceReference"
+								},
+								"path": "gold"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_TotalRev_Synapse_Practice2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_TotalRev_Synapse_Practice2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_TotalRev_Synapse_Practice2')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ppl_For_Each_Lookup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -996,72 +1112,6 @@
 				"[concat(variables('factoryId'), '/datasets/lookup_practice')]",
 				"[concat(variables('factoryId'), '/datasets/ds_SqlTable_copy_soruce')]",
 				"[concat(variables('factoryId'), '/datasets/ds_csv_sink_files')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ppl_Aggregate_Sales_To_Gold_Practice2')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Silver_Copydata_To_Gold",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlDWSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"allowCopyCommand": true,
-								"copyCommandSettings": {},
-								"tableOption": "autoCreate",
-								"disableMetricsCollection": false
-							},
-							"enableStaging": true,
-							"stagingSettings": {
-								"linkedServiceName": {
-									"referenceName": "ls_project9_1",
-									"type": "LinkedServiceReference"
-								},
-								"path": "gold"
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_TotalRev_Synapse_Practice2",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_TotalRev_Synapse_Practice2",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_TotalRev_Synapse_Practice2')]",
-				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
 			]
 		},
 		{
@@ -3319,6 +3369,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Ingest_Sales_practice2",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -3333,7 +3390,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Ingest_Sales_To_Bronze')]"
+				"[concat(variables('factoryId'), '/pipelines/Ingest_Sales_To_Bronze')]",
+				"[concat(variables('factoryId'), '/pipelines/Ingest_Sales_practice2')]"
 			]
 		},
 		{
