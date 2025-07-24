@@ -153,7 +153,14 @@
 						{
 							"name": "Copy data_NBN_Files",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "If Condition_NBN_LastModified",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -216,87 +223,8 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Copy data_NBN_Sink",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "ForEach_Metadata_NBN",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "DS_NBN_Parameterized",
-						"type": "DatasetReference",
-						"parameters": {
-							"ItenMane(NBN)": {
-								"value": "@variables('CurrentNBNFile')",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DS_NBN_Sink_p",
-						"type": "DatasetReference"
-					}
-				]
 			}
 		],
-		"parameters": {
-			"CurrentNBNFileNmae": {
-				"type": "string"
-			},
-			"PreviousNBNFileName": {
-				"type": "string"
-			}
-		},
 		"variables": {
 			"CurrentNBNFile": {
 				"type": "String"
