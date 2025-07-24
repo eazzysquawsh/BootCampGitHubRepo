@@ -289,6 +289,14 @@
 				]
 			}
 		],
+		"parameters": {
+			"CurrentNBNFileNmae": {
+				"type": "string"
+			},
+			"PreviousNBNFileName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"CurrentNBNFile": {
 				"type": "String"
