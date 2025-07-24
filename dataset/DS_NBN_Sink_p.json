@@ -1,0 +1,22 @@
+{
+	"name": "DS_NBN_Sink_p",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Practice2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "adffunctionscontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
