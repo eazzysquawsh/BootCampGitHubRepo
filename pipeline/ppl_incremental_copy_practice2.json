@@ -218,14 +218,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"CurrentFile": {
-				"type": "string"
-			},
-			"PreviousFile": {
-				"type": "string"
-			}
-		},
 		"variables": {
 			"CurrentNBNFile": {
 				"type": "String"
