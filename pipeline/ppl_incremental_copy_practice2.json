@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get_Metadata_practice2",
+				"name": "Get Metadata NBN",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_metadata_dessert4all_practice2",
+						"referenceName": "ds_NBN_MD",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -32,6 +32,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "Incremental_csv_Files"
+		},
 		"annotations": []
 	}
 }
