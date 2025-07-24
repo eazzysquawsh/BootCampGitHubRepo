@@ -91,6 +91,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"CurrentFile": {
+				"type": "string"
+			},
+			"PreviousFile": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "Incremental_csv_Files"
 		},
