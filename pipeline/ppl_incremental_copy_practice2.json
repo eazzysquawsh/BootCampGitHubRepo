@@ -98,7 +98,56 @@
 									]
 								}
 							],
-							"userProperties": []
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@greater(activity('Get Metadata_NBN_Para').output.lastModified,variables('PreviousNBNFiles'))",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Set variable_NBN_ItemName",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "CurrentNBNFile",
+											"value": {
+												"value": "@activity('Get Metadata_NBN_Para').output.itemName",
+												"type": "Expression"
+											}
+										}
+									},
+									{
+										"name": "Set variable NBN_LastModified",
+										"type": "SetVariable",
+										"dependsOn": [
+											{
+												"activity": "Set variable_NBN_ItemName",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "PreviousNBNFiles",
+											"value": {
+												"value": "@activity('Get Metadata_NBN_Para').output.lastModified",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
 						}
 					]
 				}
