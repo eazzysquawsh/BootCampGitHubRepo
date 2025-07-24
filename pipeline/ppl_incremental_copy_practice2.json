@@ -86,6 +86,19 @@
 									"type": "DelimitedTextReadSettings"
 								}
 							}
+						},
+						{
+							"name": "If Condition_NBN_LastModified",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata_NBN_Para",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": []
 						}
 					]
 				}
@@ -97,6 +110,14 @@
 			},
 			"PreviousFile": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"CurrentNBNFile": {
+				"type": "String"
+			},
+			"PreviousNBNFiles": {
+				"type": "String"
 			}
 		},
 		"folder": {
