@@ -33,7 +33,7 @@
 				}
 			},
 			{
-				"name": "ForEach_Metadata_NBN",
+				"name": "ForEach_NBN",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -52,62 +52,18 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Get Metadata_NBN_Para",
-							"type": "GetMetadata",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "DS_NBN_Parameterized",
-									"type": "DatasetReference",
-									"parameters": {
-										"ItenMane(NBN)": {
-											"value": "@item().Name",
-											"type": "Expression"
-										}
-									}
-								},
-								"fieldList": [
-									"lastModified",
-									"itemName"
-								],
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							}
-						},
-						{
-							"name": "If Condition_NBN_LastModified",
+							"name": "If Condition_NBN",
 							"type": "IfCondition",
-							"dependsOn": [
-								{
-									"activity": "Get Metadata_NBN_Para",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@greater(activity('Get Metadata_NBN_Para').output.lastModified,variables('PreviousNBNFiles'))",
+									"value": "@greater(activity('Get Metadata NBN').output.lastModified,variables('PreviousNBNFiles'))",
 									"type": "Expression"
 								},
 								"ifTrueActivities": [
 									{
-										"name": "Set variable_NBN_ItemName",
+										"name": "Set variable_NBN_Filename",
 										"type": "SetVariable",
 										"dependsOn": [],
 										"policy": {
@@ -118,17 +74,17 @@
 										"typeProperties": {
 											"variableName": "CurrentNBNFile",
 											"value": {
-												"value": "@activity('Get Metadata_NBN_Para').output.itemName",
+												"value": "@activity('Get Metadata NBN').output.itemName",
 												"type": "Expression"
 											}
 										}
 									},
 									{
-										"name": "Set variable NBN_LastModified",
+										"name": "Set variable NBN LastModified",
 										"type": "SetVariable",
 										"dependsOn": [
 											{
-												"activity": "Set variable_NBN_ItemName",
+												"activity": "Set variable_NBN_Filename",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -142,84 +98,84 @@
 										"typeProperties": {
 											"variableName": "PreviousNBNFiles",
 											"value": {
-												"value": "@activity('Get Metadata_NBN_Para').output.lastModified",
+												"value": "@activity('Get Metadata NBN').output.lastModified",
 												"type": "Expression"
 											}
 										}
+									},
+									{
+										"name": "Copy data_ NBN_Incremental",
+										"type": "Copy",
+										"dependsOn": [
+											{
+												"activity": "Set variable NBN LastModified",
+												"dependencyConditions": [
+													"Succeeded"
+												]
+											}
+										],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "DelimitedTextSource",
+												"storeSettings": {
+													"type": "AzureBlobFSReadSettings",
+													"recursive": true,
+													"enablePartitionDiscovery": false
+												},
+												"formatSettings": {
+													"type": "DelimitedTextReadSettings"
+												}
+											},
+											"sink": {
+												"type": "DelimitedTextSink",
+												"storeSettings": {
+													"type": "AzureBlobFSWriteSettings"
+												},
+												"formatSettings": {
+													"type": "DelimitedTextWriteSettings",
+													"quoteAllText": true,
+													"fileExtension": ".txt"
+												}
+											},
+											"enableStaging": false,
+											"translator": {
+												"type": "TabularTranslator",
+												"typeConversion": true,
+												"typeConversionSettings": {
+													"allowDataTruncation": true,
+													"treatBooleanAsNumber": false
+												}
+											}
+										},
+										"inputs": [
+											{
+												"referenceName": "DS_NBN_Parameterized",
+												"type": "DatasetReference",
+												"parameters": {
+													"ItenMane(NBN)": {
+														"value": "@variables('CurrentNBNFile')",
+														"type": "Expression"
+													}
+												}
+											}
+										],
+										"outputs": [
+											{
+												"referenceName": "DS_NBN_Sink_p",
+												"type": "DatasetReference"
+											}
+										]
 									}
 								]
 							}
-						},
-						{
-							"name": "Copy data_NBN_Files",
-							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "If Condition_NBN_LastModified",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobFSReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "DS_NBN_Parameterized",
-									"type": "DatasetReference",
-									"parameters": {
-										"ItenMane(NBN)": {
-											"value": "@variables('CurrentNBNFile')",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "DS_NBN_Sink",
-									"type": "DatasetReference"
-								}
-							]
 						}
 					]
 				}
