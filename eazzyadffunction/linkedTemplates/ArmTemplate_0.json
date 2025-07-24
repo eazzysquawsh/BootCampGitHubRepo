@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyadffunction"
 		},
+		"LS_Practice2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_Practice2'"
+		},
 		"Ls_sqlTable_Source_Copy_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Ls_sqlTable_Source_Copy'"
@@ -83,9 +87,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sink_sqlTable_DF'"
 		},
-		"ls_sink_sqlTables_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_sink_sqlTables'"
+		"LS_Practice2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"Ls_sqlTable_Source_Copy_properties_typeProperties_server": {
 			"type": "string",
@@ -210,24 +214,29 @@
 		"ls_sink_sqlTable_DF_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
-		},
-		"ls_sink_sqlTables_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "eazzyfunctionserver.database.windows.net"
-		},
-		"ls_sink_sqlTables_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "eazzyfunctiondb"
-		},
-		"ls_sink_sqlTables_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "eazzysquawsh"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Practice2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_Practice2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_Practice2_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Ls_sqlTable_Source_Copy')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -573,28 +582,6 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('ls_sink_sqlTable_DF_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_sink_sqlTables')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_sink_sqlTables_properties_typeProperties_server')]",
-					"database": "[parameters('ls_sink_sqlTables_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_sink_sqlTables_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_sink_sqlTables_password')]"
 					}
 				}
 			},

@@ -7,9 +7,25 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyadffunction"
 		},
+		"ls_sink_sqlTables_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_sink_sqlTables'"
+		},
 		"ls_sqlTable_DataFlow_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sqlTable_DataFlow'"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzyfunctiondb"
+		},
+		"ls_sink_sqlTables_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_sqlTable_DataFlow_properties_typeProperties_server": {
 			"type": "string",
@@ -28,6 +44,28 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_sink_sqlTables')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_sink_sqlTables_properties_typeProperties_server')]",
+					"database": "[parameters('ls_sink_sqlTables_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_sink_sqlTables_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_sink_sqlTables_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_sqlTable_DataFlow')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -254,6 +292,53 @@
 					"schema": "dbo",
 					"table": "Silver_to_Gold"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_NBN_MD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Practice2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/NaughtyButNice",
+						"fileSystem": "bcdataengrgcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "SalesMonth",
+						"type": "String"
+					},
+					{
+						"name": "Retailer",
+						"type": "String"
+					},
+					{
+						"name": "Product",
+						"type": "String"
+					},
+					{
+						"name": "SalesValueUSD",
+						"type": "String"
+					},
+					{
+						"name": "UnitsSold",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -636,79 +721,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_csv_copy')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_ForEach_csv_files",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Sales_csv_file": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "DS-Folder"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().Sales_csv_file",
-							"type": "Expression"
-						},
-						"folderPath": "csv_files_adf_copy",
-						"fileSystem": "adffunctionscontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_csv_practice')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_csv_sink_files",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"SalesLT_New": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().SalesLT_New",
-							"type": "Expression"
-						},
-						"folderPath": "csv_files_practice",
-						"fileSystem": "adffunctionscontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		}

@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "eazzyadffunction"
 		},
+		"LS_Practice2_accountKey": {
+			"value": ""
+		},
 		"Ls_sqlTable_Source_Copy_password": {
 			"value": ""
 		},
@@ -67,6 +70,9 @@
 		},
 		"ls_sqlTable_DataFlow_password": {
 			"value": ""
+		},
+		"LS_Practice2_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"Ls_sqlTable_Source_Copy_properties_typeProperties_server": {
 			"value": "eazzyfunctionserver.database.windows.net"

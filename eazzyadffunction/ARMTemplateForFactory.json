@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyadffunction"
 		},
+		"LS_Practice2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LS_Practice2'"
+		},
 		"Ls_sqlTable_Source_Copy_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'Ls_sqlTable_Source_Copy'"
@@ -90,6 +94,10 @@
 		"ls_sqlTable_DataFlow_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sqlTable_DataFlow'"
+		},
+		"LS_Practice2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"Ls_sqlTable_Source_Copy_properties_typeProperties_server": {
 			"type": "string",
@@ -1309,7 +1317,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Get_Metadata_practice2",
+						"name": "Get Metadata NBN",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -1322,7 +1330,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_metadata_dessert4all_practice2",
+								"referenceName": "ds_NBN_MD",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -1338,22 +1346,18 @@
 								"type": "DelimitedTextReadSettings"
 							}
 						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "Incremental_csv_Files"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_metadata_dessert4all_practice2')]"
+				"[concat(variables('factoryId'), '/datasets/ds_NBN_MD')]"
 			]
 		},
 		{
@@ -1834,6 +1838,55 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/dessert4alldedpool')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_NBN_MD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Practice2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/NaughtyButNice",
+						"fileSystem": "bcdataengrgcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "SalesMonth",
+						"type": "String"
+					},
+					{
+						"name": "Retailer",
+						"type": "String"
+					},
+					{
+						"name": "Product",
+						"type": "String"
+					},
+					{
+						"name": "SalesValueUSD",
+						"type": "String"
+					},
+					{
+						"name": "UnitsSold",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Practice2')]"
 			]
 		},
 		{
@@ -3064,6 +3117,23 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_sink_sqlTable_DF')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Practice2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_Practice2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_Practice2_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Ls_sqlTable_Source_Copy')]",
