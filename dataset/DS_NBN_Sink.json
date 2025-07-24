@@ -1,25 +1,16 @@
 {
-	"name": "DS_NBN_Parameterized",
+	"name": "DS_NBN_Sink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "LS_Practice2",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"ItenMane(NBN)": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().ItenMane(NBN)",
-					"type": "Expression"
-				},
-				"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/NaughtyButNice",
+				"folderPath": "Incremental_Copy",
 				"fileSystem": "bcdataengrgcontainer"
 			},
 			"columnDelimiter": ",",
