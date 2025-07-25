@@ -1,0 +1,17 @@
+{
+	"name": "DestinationDataset_ew3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_project9_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "projectpracticecontainer"
+			}
+		}
+	}
+}
