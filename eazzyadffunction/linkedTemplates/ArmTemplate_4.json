@@ -17,6 +17,374 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_practice')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DF_ds_Practice_xlsx",
+								"type": "DatasetReference"
+							},
+							"name": "PracticexlsxtosqlTbl"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Practice_ExchangeRate",
+								"type": "DatasetReference"
+							},
+							"name": "PracticeExchangeRate"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sink_df_practice",
+								"type": "DatasetReference"
+							},
+							"name": "sinksqlPractice"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filterpractice"
+						},
+						{
+							"name": "filterExchangeRatePractice"
+						},
+						{
+							"name": "xlsxcurrencylookuppractice"
+						},
+						{
+							"name": "selectDSPractice"
+						},
+						{
+							"name": "derivedColumnPractice"
+						},
+						{
+							"name": "selectTargetPractice"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Period as date,",
+						"          Product as string,",
+						"          {Unit Price} as double,",
+						"          Currency as string,",
+						"          {Units Sold} as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> PracticexlsxtosqlTbl",
+						"source(output(",
+						"          FromCurrency as string,",
+						"          ToCurrency as string,",
+						"          Date as date,",
+						"          ExchangeRate as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> PracticeExchangeRate",
+						"PracticexlsxtosqlTbl filter(Product!='Month Total') ~> filterpractice",
+						"PracticeExchangeRate filter(ToCurrency=='USD') ~> filterExchangeRatePractice",
+						"filterpractice, filterExchangeRatePractice lookup(Period == Date",
+						"     && Currency == FromCurrency,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> xlsxcurrencylookuppractice",
+						"xlsxcurrencylookuppractice select(mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          ToCurrency,",
+						"          Date,",
+						"          ExchangeRate",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectDSPractice",
+						"selectDSPractice derive(SalesValueUSD = round({Unit Price}*{Units Sold}*ExchangeRate,2)) ~> derivedColumnPractice",
+						"derivedColumnPractice select(mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          Date,",
+						"          ExchangeRate,",
+						"          SalesValueUSD",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectTargetPractice",
+						"selectTargetPractice sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sinksqlPractice"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_xlsx_to_sqlTbl')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_xlsx_Source_Dataflow",
+								"type": "DatasetReference"
+							},
+							"name": "JollyGoodxlsx"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_xlsx_Currency_DataFlow",
+								"type": "DatasetReference"
+							},
+							"name": "CurrencyConversionToDollars"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Sink_DF",
+								"type": "DatasetReference"
+							},
+							"name": "SinkTosqlTable"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filterMonthTotal"
+						},
+						{
+							"name": "ConvertCurrencyToUSD"
+						},
+						{
+							"name": "LookupCurrencyUSD"
+						},
+						{
+							"name": "derivedColumnTotal"
+						},
+						{
+							"name": "SelectTargetColumn"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Period as date,",
+						"          Product as string,",
+						"          {Unit Price} as double,",
+						"          Currency as string,",
+						"          {Units Sold} as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> JollyGoodxlsx",
+						"source(output(",
+						"          FromCurrency as string,",
+						"          ToCurrency as string,",
+						"          Date as date,",
+						"          ExchangeRate as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CurrencyConversionToDollars",
+						"JollyGoodxlsx filter(Product!='Month Total') ~> filterMonthTotal",
+						"CurrencyConversionToDollars filter(ToCurrency==\"USD\") ~> ConvertCurrencyToUSD",
+						"filterMonthTotal, ConvertCurrencyToUSD lookup(Period == Date",
+						"     && Currency == FromCurrency,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> LookupCurrencyUSD",
+						"LookupCurrencyUSD derive(TotalAmountUSD = round({Unit Price}*{Units Sold}*ExchangeRate, 2)) ~> derivedColumnTotal",
+						"derivedColumnTotal select(mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          Date,",
+						"          ExchangeRate,",
+						"          TotalAmountUSD",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTargetColumn",
+						"SelectTargetColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          Date,",
+						"          ExchangeRate,",
+						"          TotalAmountUSD",
+						"     )) ~> SinkTosqlTable"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Aggregate_Sales_To_Gold')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Silver_to_Gold",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Aggregate_Sales_To_Gold",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SilvertoGold": {},
+									"Gold": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "ls_project9_1",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "loggingfolderpathcontainer"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Transform_Sales_To_Silver')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Bronze to Silver",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Transform_Sales_To_Silver",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"bronzesource": {},
+									"Dessert4allSilverSink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ppl_for_data_flow')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ppl_Data _flow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_xlsx_to_sqlTbl",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"JollyGoodxlsx": {},
+									"CurrencyConversionToDollars": {},
+									"SinkTosqlTable": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-07-13T15:05:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_xlsx_to_sqlTbl')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_To_Bronze')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -151,7 +519,10 @@
 				"annotations": [],
 				"lastPublishTime": "2025-07-17T23:34:21Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]",
+				"[concat(variables('factoryId'), '/pipelines/Aggregate_Sales_To_Gold')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_practice2')]",
@@ -287,7 +658,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Tr_Name_Schedule')]",
@@ -316,7 +689,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ppl_for_data_flow')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Project9_Trigger')]",
