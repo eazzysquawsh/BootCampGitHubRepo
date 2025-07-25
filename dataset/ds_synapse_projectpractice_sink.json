@@ -1,0 +1,16 @@
+{
+	"name": "ds_synapse_projectpractice_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Synapse_projectpractice",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "Supplierscsv"
+		}
+	}
+}
