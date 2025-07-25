@@ -1,0 +1,18 @@
+{
+	"name": "SourceDataset_ew3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Practice2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/CandyShack",
+				"fileSystem": "bcdataengrgcontainer"
+			}
+		}
+	}
+}
