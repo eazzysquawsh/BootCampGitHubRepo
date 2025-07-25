@@ -1402,6 +1402,140 @@
 											"type": "DelimitedTextReadSettings"
 										}
 									}
+								},
+								{
+									"name": "If Condition_CS",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "Get Metadata_CS_Para",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"expression": {
+											"value": "@greater(activity('Get Metadata_CS_Para').output.lastModified,variables('PreviousFileCS'))",
+											"type": "Expression"
+										},
+										"ifTrueActivities": [
+											{
+												"name": "Set variable_CS_FileName",
+												"type": "SetVariable",
+												"dependsOn": [],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "CurrentFileCS",
+													"value": {
+														"value": "@activity('Get Metadata_CS_Para').output.itemName",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Set variable_CS_LastModified",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "Set variable_CS_FileName",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "PreviousFileCS",
+													"value": {
+														"value": "@activity('Get Metadata_CS_Para').output.lastModified",
+														"type": "Expression"
+													}
+												}
+											},
+											{
+												"name": "Copy data_CS_Increment",
+												"type": "Copy",
+												"dependsOn": [
+													{
+														"activity": "Set variable_CS_LastModified",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "DelimitedTextSource",
+														"storeSettings": {
+															"type": "AzureBlobFSReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "DelimitedTextReadSettings"
+														}
+													},
+													"sink": {
+														"type": "DelimitedTextSink",
+														"storeSettings": {
+															"type": "AzureBlobFSWriteSettings"
+														},
+														"formatSettings": {
+															"type": "DelimitedTextWriteSettings",
+															"quoteAllText": true,
+															"fileExtension": ".txt"
+														}
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "ds_CS_Para",
+														"type": "DatasetReference",
+														"parameters": {
+															"CSFileName": {
+																"value": "@variables('CurrentFileCS')",
+																"type": "Expression"
+															}
+														}
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "ds_CS_Sink",
+														"type": "DatasetReference",
+														"parameters": {}
+													}
+												]
+											}
+										]
+									}
 								}
 							]
 						}
@@ -1425,7 +1559,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_cs')]",
-				"[concat(variables('factoryId'), '/datasets/ds_CS_Para')]"
+				"[concat(variables('factoryId'), '/datasets/ds_CS_Para')]",
+				"[concat(variables('factoryId'), '/datasets/ds_CS_Sink')]"
 			]
 		},
 		{
@@ -1872,6 +2007,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().CSFileName",
+							"type": "Expression"
+						},
 						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/CandyShack",
 						"fileSystem": "bcdataengrgcontainer"
 					},
@@ -1909,6 +2048,33 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LS_Practice2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_CS_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_project9_1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "projectpracticecontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
 			]
 		},
 		{
