@@ -1317,7 +1317,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Get Metadata NBN",
+						"name": "Get Metadata_CS",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -1330,7 +1330,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_NBN_MD",
+								"referenceName": "ds_cs",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -1346,68 +1346,18 @@
 								"type": "DelimitedTextReadSettings"
 							}
 						}
-					},
-					{
-						"name": "ForEach_Metadata_NBN",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata NBN",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata NBN').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Get Metadata_NBN_Para",
-									"type": "GetMetadata",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"dataset": {
-											"referenceName": "DS_NBN_Parameterized",
-											"type": "DatasetReference",
-											"parameters": {
-												"ItenMane(NBN)": {
-													"value": "@item().Name",
-													"type": "Expression"
-												}
-											}
-										},
-										"fieldList": [
-											"lastModified",
-											"itemName"
-										],
-										"storeSettings": {
-											"type": "AzureBlobFSReadSettings",
-											"enablePartitionDiscovery": false
-										},
-										"formatSettings": {
-											"type": "DelimitedTextReadSettings"
-										}
-									}
-								}
-							]
-						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"CurrentNBNFile": {
+						"type": "String"
+					},
+					"PreviousNBNFiles": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "Incremental_csv_Files"
@@ -1415,8 +1365,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_NBN_MD')]",
-				"[concat(variables('factoryId'), '/datasets/DS_NBN_Parameterized')]"
+				"[concat(variables('factoryId'), '/datasets/ds_cs')]"
 			]
 		},
 		{
@@ -1900,55 +1849,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_NBN_MD')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Practice2",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/NaughtyButNice",
-						"fileSystem": "bcdataengrgcontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SalesMonth",
-						"type": "String"
-					},
-					{
-						"name": "Retailer",
-						"type": "String"
-					},
-					{
-						"name": "Product",
-						"type": "String"
-					},
-					{
-						"name": "SalesValueUSD",
-						"type": "String"
-					},
-					{
-						"name": "UnitsSold",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Practice2')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ds_Parquet_project9_sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2348,6 +2248,59 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_adls_adf_copy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_cs')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Practice2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/CandyShack",
+						"fileSystem": "bcdataengrgcontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Retailer",
+						"type": "String"
+					},
+					{
+						"name": "SkuCode",
+						"type": "String"
+					},
+					{
+						"name": "Product",
+						"type": "String"
+					},
+					{
+						"name": "SalesMonth",
+						"type": "String"
+					},
+					{
+						"name": "SalesValue",
+						"type": "String"
+					},
+					{
+						"name": "UnitsSold",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Practice2')]"
 			]
 		},
 		{
@@ -4157,60 +4110,6 @@
 				"[concat(variables('factoryId'), '/datasets/ds_xlsx_Source_Dataflow')]",
 				"[concat(variables('factoryId'), '/datasets/ds_xlsx_Currency_DataFlow')]",
 				"[concat(variables('factoryId'), '/datasets/ds_Sink_DF')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_NBN_Parameterized')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Practice2",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"ItenMane(NBN)": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/NaughtyButNice",
-						"fileSystem": "bcdataengrgcontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SalesMonth",
-						"type": "String"
-					},
-					{
-						"name": "Retailer",
-						"type": "String"
-					},
-					{
-						"name": "Product",
-						"type": "String"
-					},
-					{
-						"name": "SalesValueUSD",
-						"type": "String"
-					},
-					{
-						"name": "UnitsSold",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Practice2')]"
 			]
 		}
 	]
