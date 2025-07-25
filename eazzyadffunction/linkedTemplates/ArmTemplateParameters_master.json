@@ -185,8 +185,8 @@
 		"ls_sqlTable_DataFlow_properties_typeProperties_userName": {
 			"value": "eazzysquawsh"
 		},
-		"Project9_Trigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/c74fd3b2-fc1c-4d03-badb-4ef74f0ff6ce/resourceGroups/eazzyRG/providers/Microsoft.Storage/storageAccounts/project8strg"
+		"Trigger_Practice_Projects_properties_typeProperties_scope": {
+			"value": "/subscriptions/c74fd3b2-fc1c-4d03-badb-4ef74f0ff6ce/resourceGroups/eazzyRG/providers/Microsoft.Storage/storageAccounts/eazzystrgacc"
 		},
 		"containerUri": {
 			"value": ""
