@@ -1,0 +1,319 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "eazzyadffunction"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_To_Bronze')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "landing",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "ls_project9_1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "loggingfolderpathcontainer"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_project9_dlt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_project9_parquet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Transform_Sales_To_Silver",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "landing",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Transform_Sales_To_Silver",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Aggregate_Sales_To_Gold",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Transform_Sales_To_Silver",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Aggregate_Sales_To_Gold",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-07-17T23:34:21Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Ingest_Sales_practice2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Landing_practice2",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"wildcardFileName": "*",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "ls_project9_1",
+										"type": "LinkedServiceReference"
+									},
+									"path": "gold"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_project9_dlt",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_parquet_project9",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "ppl_Aggregate_Sales_To_Gold_Practice2",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Transform_Sales_To_Silver",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "ppl_Aggregate_Sales_To_Gold_Practice2",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Transform_Sales_To_Silver",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Landing_practice2",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Transform_Sales_To_Silver",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Trigger_s3f')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "GUI_MetadataDrivenCopyTask_s3f_TopLevel",
+						"type": "PipelineReference"
+					},
+					"parameters": {}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Hour",
+					"interval": 24,
+					"startTime": "2025-07-24T19:52:00Z",
+					"endTime": "2025-07-27T19:52:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

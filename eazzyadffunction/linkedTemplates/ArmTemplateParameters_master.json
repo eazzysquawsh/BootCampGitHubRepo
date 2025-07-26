@@ -20,10 +20,19 @@
 		"linkedService1_connectionString": {
 			"value": ""
 		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_password": {
+			"value": ""
+		},
+		"ls_4_csv_copy_tosqldb_practice_accountKey": {
+			"value": ""
+		},
 		"ls_Dessert4all_Practice2_password": {
 			"value": ""
 		},
 		"ls_ForEach_csv_files_accountKey": {
+			"value": ""
+		},
+		"ls_GUI_sql_Table_copy_password": {
 			"value": ""
 		},
 		"ls_Practice_DF_accountKey": {
@@ -33,6 +42,9 @@
 			"value": ""
 		},
 		"ls_SqlDatabase_copy_password": {
+			"value": ""
+		},
+		"ls_Synapse_projectpractice_password": {
 			"value": ""
 		},
 		"ls_Zipped_Folder_Practice_accountKey": {
@@ -51,6 +63,9 @@
 			"value": ""
 		},
 		"ls_for_metadata_accountKey": {
+			"value": ""
+		},
+		"ls_incremental_table_copy_password": {
 			"value": ""
 		},
 		"ls_lookup_sql_password": {
@@ -86,6 +101,18 @@
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb_2025-07-25T14-58Z"
+		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
+			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
 		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 			"value": "project9workspace.sql.azuresynapse.net"
 		},
@@ -97,6 +124,15 @@
 		},
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb_2025-07-25T22-43Z"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
 		},
 		"ls_Practice_DF_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
@@ -111,6 +147,15 @@
 			"value": "eazzybtcdb"
 		},
 		"ls_SqlDatabase_copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_server": {
+			"value": "projectpracticeworkspace.sql.azuresynapse.net"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_database": {
+			"value": "projectpracticededsqlpool"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_userName": {
 			"value": "eazzysquawsh"
 		},
 		"ls_Zipped_Folder_Practice_properties_typeProperties_url": {
@@ -136,6 +181,15 @@
 		},
 		"ls_for_metadata_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_incremental_table_copy_properties_typeProperties_server": {
+			"value": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_incremental_table_copy_properties_typeProperties_database": {
+			"value": "eazzyfunctiondb_2025-07-25T22-43Z"
+		},
+		"ls_incremental_table_copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
 		},
 		"ls_lookup_sql_properties_typeProperties_server": {
 			"value": "eazzyfunctionserver.database.windows.net"

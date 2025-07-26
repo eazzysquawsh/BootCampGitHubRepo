@@ -27,6 +27,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
 		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_4_csv_copy_to_sqldb_sink_practice'"
+		},
+		"ls_4_csv_copy_tosqldb_practice_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_4_csv_copy_tosqldb_practice'"
+		},
 		"ls_Dessert4all_Practice2_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_Dessert4all_Practice2'"
@@ -34,6 +42,10 @@
 		"ls_ForEach_csv_files_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_ForEach_csv_files'"
+		},
+		"ls_GUI_sql_Table_copy_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_GUI_sql_Table_copy'"
 		},
 		"ls_Practice_DF_accountKey": {
 			"type": "secureString",
@@ -46,6 +58,10 @@
 		"ls_SqlDatabase_copy_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_SqlDatabase_copy'"
+		},
+		"ls_Synapse_projectpractice_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_Synapse_projectpractice'"
 		},
 		"ls_Zipped_Folder_Practice_accountKey": {
 			"type": "secureString",
@@ -71,22 +87,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_for_metadata'"
 		},
-		"ls_lookup_sql_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_lookup_sql'"
-		},
-		"ls_metadata_sqldb_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_metadata_sqldb'"
-		},
-		"ls_project9_1_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ls_project9_1'"
-		},
-		"ls_sink_sqlTable_DF_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'ls_sink_sqlTable_DF'"
-		},
 		"LS_Practice2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
@@ -107,6 +107,22 @@
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzyfunctiondb_2025-07-25T14-58Z"
+		},
+		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
+		"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
 		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "project9workspace.sql.azuresynapse.net"
@@ -122,6 +138,18 @@
 		"ls_ForEach_csv_files_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzyfunctionserver.database.windows.net"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzyfunctiondb_2025-07-25T22-43Z"
+		},
+		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_Practice_DF_properties_typeProperties_url": {
 			"type": "string",
@@ -140,6 +168,18 @@
 			"defaultValue": "eazzybtcdb"
 		},
 		"ls_SqlDatabase_copy_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "projectpracticeworkspace.sql.azuresynapse.net"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "projectpracticededsqlpool"
+		},
+		"ls_Synapse_projectpractice_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
 		},
@@ -174,46 +214,6 @@
 		"ls_for_metadata_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
-		},
-		"ls_lookup_sql_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "eazzyfunctionserver.database.windows.net"
-		},
-		"ls_lookup_sql_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "eazzyfunctiondb"
-		},
-		"ls_lookup_sql_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "eazzysquawsh"
-		},
-		"ls_metadata_sqldb_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "eazzyfunctionserver.database.windows.net"
-		},
-		"ls_metadata_sqldb_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "eazzyfunctiondb"
-		},
-		"ls_metadata_sqldb_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "eazzysquawsh"
-		},
-		"ls_project9_1_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://project8strg.dfs.core.windows.net/"
-		},
-		"ls_sink_sqlTable_DF_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "eazzyfunctionserver.database.windows.net"
-		},
-		"ls_sink_sqlTable_DF_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "eazzyfunctiondb"
-		},
-		"ls_sink_sqlTable_DF_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "eazzysquawsh"
 		}
 	},
 	"variables": {
@@ -303,6 +303,45 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_4_csv_copy_to_sqldb_sink_practice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server')]",
+					"database": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_4_csv_copy_tosqldb_practice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_4_csv_copy_tosqldb_practice_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_Dessert4all_Practice2')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -336,6 +375,28 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('ls_ForEach_csv_files_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_GUI_sql_Table_copy')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_GUI_sql_Table_copy_properties_typeProperties_server')]",
+					"database": "[parameters('ls_GUI_sql_Table_copy_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_GUI_sql_Table_copy_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_GUI_sql_Table_copy_password')]"
 					}
 				}
 			},
@@ -392,6 +453,28 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('ls_SqlDatabase_copy_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_Synapse_projectpractice')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"server": "[parameters('ls_Synapse_projectpractice_properties_typeProperties_server')]",
+					"database": "[parameters('ls_Synapse_projectpractice_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_Synapse_projectpractice_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_Synapse_projectpractice_password')]"
 					}
 				}
 			},
@@ -499,89 +582,6 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('ls_for_metadata_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_lookup_sql')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_lookup_sql_properties_typeProperties_server')]",
-					"database": "[parameters('ls_lookup_sql_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_lookup_sql_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_lookup_sql_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_metadata_sqldb')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_metadata_sqldb_properties_typeProperties_server')]",
-					"database": "[parameters('ls_metadata_sqldb_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_metadata_sqldb_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_metadata_sqldb_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_project9_1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_project9_1_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_project9_1_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_sink_sqlTable_DF')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('ls_sink_sqlTable_DF_properties_typeProperties_server')]",
-					"database": "[parameters('ls_sink_sqlTable_DF_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('ls_sink_sqlTable_DF_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('ls_sink_sqlTable_DF_password')]"
 					}
 				}
 			},
