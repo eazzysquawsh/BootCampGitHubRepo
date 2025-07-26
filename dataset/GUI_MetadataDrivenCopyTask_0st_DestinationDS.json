@@ -1,0 +1,33 @@
+{
+	"name": "GUI_MetadataDrivenCopyTask_0st_DestinationDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_GUI_sql_Table_copy",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"cw_schema": {
+				"type": "String"
+			},
+			"cw_table": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "GUI_MetadataDrivenCopyTask_0st_20250726"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().cw_schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().cw_table",
+				"type": "Expression"
+			}
+		}
+	}
+}
