@@ -2,7 +2,7 @@
 	"name": "Trigger_0st",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "GUI_MetadataDrivenCopyTask_0st_TopLevel",
