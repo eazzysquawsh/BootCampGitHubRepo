@@ -2,7 +2,7 @@
 	"name": "Trigger_s3f",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "GUI_MetadataDrivenCopyTask_s3f_TopLevel",
