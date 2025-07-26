@@ -661,9 +661,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"Trigger_Practice_Projects_properties_typeProperties_scope": {
-						"value": "[parameters('Trigger_Practice_Projects_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -684,6 +681,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Trigger_Practice_Projects_properties_typeProperties_scope": {
+						"value": "[parameters('Trigger_Practice_Projects_properties_typeProperties_scope')]"
 					}
 				}
 			},
