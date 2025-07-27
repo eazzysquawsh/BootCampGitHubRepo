@@ -1,0 +1,19 @@
+{
+	"name": "GUI_MetadataDrivenCopyTask_cjg_ControlDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_GUI_sql_Table_copy",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "GUI_MetadataDrivenCopyTask_cjg_20250726"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MainControlTable_cjg"
+		}
+	}
+}
