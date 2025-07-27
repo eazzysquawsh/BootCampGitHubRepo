@@ -1,8 +1,8 @@
 {
-	"name": "ds_metadata_dessert4all_practice2",
+	"name": "DS_NBN_Sink",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ds_incremental_copy",
+			"referenceName": "LS_Practice2",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "staging_unzipped_data/Azure-Data-Factory-datasets.zip/Azure-Data-Factory-by-Example-Second-Edition-main/SampleData/Desserts4All",
+				"folderPath": "Incremental_Copy",
 				"fileSystem": "bcdataengrgcontainer"
 			},
 			"columnDelimiter": ",",

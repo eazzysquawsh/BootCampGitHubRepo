@@ -236,6 +236,8 @@
 		"folder": {
 			"name": "Incremental_csv_Files"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2025-07-20T03:55:54Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

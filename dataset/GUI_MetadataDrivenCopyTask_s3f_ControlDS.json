@@ -15,5 +15,6 @@
 			"schema": "dbo",
 			"table": "MainControlTable_s3f"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

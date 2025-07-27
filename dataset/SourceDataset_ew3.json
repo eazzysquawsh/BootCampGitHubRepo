@@ -14,5 +14,6 @@
 				"fileSystem": "bcdataengrgcontainer"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

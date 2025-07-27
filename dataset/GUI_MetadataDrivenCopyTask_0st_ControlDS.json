@@ -15,5 +15,6 @@
 			"schema": "SalesLT",
 			"table": "MainControlTable_0st"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

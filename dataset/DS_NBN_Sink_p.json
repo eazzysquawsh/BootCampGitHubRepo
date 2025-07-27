@@ -1,8 +1,8 @@
 {
-	"name": "ds_CS_Sink",
+	"name": "DS_NBN_Sink_p",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_project9_1",
+			"referenceName": "LS_Practice2",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileSystem": "projectpracticecontainer"
+				"fileSystem": "adffunctionscontainer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
