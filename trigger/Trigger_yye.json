@@ -2,7 +2,7 @@
 	"name": "Trigger_yye",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipeline": {
 			"pipelineReference": {
 				"referenceName": "Dessert4all_copy",
