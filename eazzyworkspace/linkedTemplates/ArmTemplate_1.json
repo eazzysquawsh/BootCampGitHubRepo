@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyworkspace"
 		},
+		"ls_for_DataFlow_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_for_DataFlow'"
+		},
 		"ls_for_metadata_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_for_metadata'"
@@ -38,6 +42,10 @@
 		"ls_sqlTable_DataFlow_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sqlTable_DataFlow'"
+		},
+		"ls_for_DataFlow_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		},
 		"ls_for_HTTPS_GitHub_properties_typeProperties_url": {
 			"type": "string",
@@ -128,6 +136,23 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_for_DataFlow')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_for_DataFlow_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_for_DataFlow_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_for_HTTPS_GitHub')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -353,7 +378,9 @@
 					}
 				]
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_for_DataFlow')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DS_NBN_Sink')]",
@@ -654,28 +681,6 @@
 						"value": "@dataset().cw_table",
 						"type": "Expression"
 					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GUI_MetadataDrivenCopyTask_cjg_ControlDS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_GUI_sql_Table_copy",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "GUI_MetadataDrivenCopyTask_cjg_20250726"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "MainControlTable_cjg"
 				}
 			},
 			"dependsOn": []

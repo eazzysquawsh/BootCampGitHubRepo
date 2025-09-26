@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
 		},
+		"ls_4_btcampstrgacc_adls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_4_btcampstrgacc_adls'"
+		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_4_csv_copy_to_sqldb_sink_practice'"
@@ -138,6 +142,10 @@
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_btcampstrgacc_adls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bootcmpstrgacc.dfs.core.windows.net/"
 		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
 			"type": "string",
@@ -381,6 +389,9 @@
 					"linkedService1_connectionString": {
 						"value": "[parameters('linkedService1_connectionString')]"
 					},
+					"ls_4_btcampstrgacc_adls_accountKey": {
+						"value": "[parameters('ls_4_btcampstrgacc_adls_accountKey')]"
+					},
 					"ls_4_csv_copy_to_sqldb_sink_practice_password": {
 						"value": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_password')]"
 					},
@@ -423,9 +434,6 @@
 					"ls_for_ADLS_Github_accountKey": {
 						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
 					},
-					"ls_for_DataFlow_accountKey": {
-						"value": "[parameters('ls_for_DataFlow_accountKey')]"
-					},
 					"LS_Practice2_properties_typeProperties_url": {
 						"value": "[parameters('LS_Practice2_properties_typeProperties_url')]"
 					},
@@ -440,6 +448,9 @@
 					},
 					"ds_incremental_copy_properties_typeProperties_url": {
 						"value": "[parameters('ds_incremental_copy_properties_typeProperties_url')]"
+					},
+					"ls_4_btcampstrgacc_adls_properties_typeProperties_url": {
+						"value": "[parameters('ls_4_btcampstrgacc_adls_properties_typeProperties_url')]"
 					},
 					"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
 						"value": "[parameters('ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server')]"
@@ -518,9 +529,6 @@
 					},
 					"ls_for_ADLS_Github_properties_typeProperties_url": {
 						"value": "[parameters('ls_for_ADLS_Github_properties_typeProperties_url')]"
-					},
-					"ls_for_DataFlow_properties_typeProperties_url": {
-						"value": "[parameters('ls_for_DataFlow_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -539,6 +547,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_for_DataFlow_accountKey": {
+						"value": "[parameters('ls_for_DataFlow_accountKey')]"
 					},
 					"ls_for_metadata_accountKey": {
 						"value": "[parameters('ls_for_metadata_accountKey')]"
@@ -563,6 +574,9 @@
 					},
 					"ls_sqlTable_DataFlow_password": {
 						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
+					},
+					"ls_for_DataFlow_properties_typeProperties_url": {
+						"value": "[parameters('ls_for_DataFlow_properties_typeProperties_url')]"
 					},
 					"ls_for_HTTPS_GitHub_properties_typeProperties_url": {
 						"value": "[parameters('ls_for_HTTPS_GitHub_properties_typeProperties_url')]"
@@ -717,6 +731,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'eazzyworkspace_ArmTemplate_4')]"
+			]
+		},
+		{
+			"name": "eazzyworkspace_ArmTemplate_6",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_6.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'eazzyworkspace_ArmTemplate_5')]"
 			]
 		}
 	]

@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
 		},
+		"ls_4_btcampstrgacc_adls_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_4_btcampstrgacc_adls'"
+		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_4_csv_copy_to_sqldb_sink_practice'"
@@ -83,10 +87,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_for_ADLS_Github'"
 		},
-		"ls_for_DataFlow_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ls_for_DataFlow'"
-		},
 		"LS_Practice2_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
@@ -106,6 +106,10 @@
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_btcampstrgacc_adls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://bootcmpstrgacc.dfs.core.windows.net/"
 		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
 			"type": "string",
@@ -210,10 +214,6 @@
 		"ls_for_ADLS_Github_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
-		},
-		"ls_for_DataFlow_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -298,6 +298,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('linkedService1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_4_btcampstrgacc_adls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_4_btcampstrgacc_adls_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_4_btcampstrgacc_adls_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -565,23 +582,6 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_for_DataFlow')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_for_DataFlow_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_for_DataFlow_accountKey')]"
 					}
 				}
 			},

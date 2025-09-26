@@ -20,6 +20,9 @@
 		"linkedService1_connectionString": {
 			"value": ""
 		},
+		"ls_4_btcampstrgacc_adls_accountKey": {
+			"value": ""
+		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_password": {
 			"value": ""
 		},
@@ -103,6 +106,9 @@
 		},
 		"ds_incremental_copy_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_btcampstrgacc_adls_properties_typeProperties_url": {
+			"value": "https://bootcmpstrgacc.dfs.core.windows.net/"
 		},
 		"ls_4_csv_copy_to_sqldb_sink_practice_properties_typeProperties_server": {
 			"value": "eazzyfunctionserver.database.windows.net"
