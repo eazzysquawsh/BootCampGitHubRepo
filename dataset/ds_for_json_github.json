@@ -1,0 +1,18 @@
+{
+	"name": "ds_for_json_github",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_for_HTTPS_GitHub",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "sqlguru007/Azure-Data-Engineering/refs/heads/main/datasets/rawdatafromapi.json"
+			}
+		},
+		"schema": {}
+	}
+}

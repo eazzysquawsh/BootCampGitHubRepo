@@ -1,0 +1,21 @@
+{
+	"name": "ds_for_Github_to_Parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_for_ADLS_Github",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Performance_Data.Parquet",
+				"folderPath": "Bronze",
+				"fileSystem": "retail-performance"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
