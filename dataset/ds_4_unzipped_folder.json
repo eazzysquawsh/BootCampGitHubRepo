@@ -1,0 +1,23 @@
+{
+	"name": "ds_4_unzipped_folder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_4_btcampstrgacc_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "unzipped",
+				"fileSystem": "landing"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
