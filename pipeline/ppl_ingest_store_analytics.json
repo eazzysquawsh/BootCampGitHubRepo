@@ -80,9 +80,14 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lookup",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -129,8 +134,14 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_Github_sqlTable",
-									"type": "DatasetReference"
+									"referenceName": "ds_Github_sqldb2",
+									"type": "DatasetReference",
+									"parameters": {
+										"FileName": {
+											"value": "@item().Table_Name",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
