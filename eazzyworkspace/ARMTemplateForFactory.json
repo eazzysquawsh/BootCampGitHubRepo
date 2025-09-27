@@ -2865,7 +2865,7 @@
 											"referenceName": "ds_Github_sqldb2",
 											"type": "DatasetReference",
 											"parameters": {
-												"FileName": {
+												"TableName": {
 													"value": "@item().Table_Name",
 													"type": "Expression"
 												}
@@ -4256,7 +4256,7 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"FileName": {
+					"TableName": {
 						"type": "string"
 					}
 				},
@@ -4266,7 +4266,7 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": {
-						"value": "@concat(dataset().FileName, '.parquet')",
+						"value": "concat(dataset().TableName, '.parquet')",
 						"type": "Expression"
 					}
 				}
