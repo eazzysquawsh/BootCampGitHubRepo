@@ -587,12 +587,20 @@
 					"referenceName": "ls_for_ADLS_Github",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "CustomerAnalytics.Parqeut",
+						"fileName": {
+							"value": "@concat(dataset().FileName, '.parquet')",
+							"type": "Expression"
+						},
 						"folderPath": "bronze",
 						"fileSystem": "storageanalytics"
 					},
@@ -632,10 +640,21 @@
 					"referenceName": "ls_Github_sqlTable",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [],
-				"typeProperties": {}
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
 			},
 			"dependsOn": []
 		}
