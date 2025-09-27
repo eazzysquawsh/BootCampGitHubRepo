@@ -2808,9 +2808,14 @@
 					{
 						"name": "ForEach1",
 						"type": "ForEach",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Lookup",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
@@ -2857,9 +2862,14 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_Github_sqlTable",
+											"referenceName": "ds_Github_sqldb2",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"FileName": {
+													"value": "@item().Table_Name",
+													"type": "Expression"
+												}
+											}
 										}
 									],
 									"outputs": [
@@ -2887,7 +2897,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_Github_json_project2')]",
 				"[concat(variables('factoryId'), '/datasets/ds_Github_Parquet_Project2')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Github_sqlTable')]"
+				"[concat(variables('factoryId'), '/datasets/ds_Github_sqlTable')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Github_sqldb2')]"
 			]
 		},
 		{
@@ -4229,6 +4240,35 @@
 				"schema": [],
 				"typeProperties": {
 					"schema": "dbo"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_Github_sqlTable')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_Github_sqldb2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_Github_sqlTable",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@concat(dataset().FileName, '.parquet')",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [

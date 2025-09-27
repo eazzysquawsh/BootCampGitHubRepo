@@ -21,6 +21,57 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Aggregate_Sales_To_Gold')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Silver_to_Gold",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Aggregate_Sales_To_Gold",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SilvertoGold": {},
+									"Gold": {}
+								}
+							},
+							"staging": {
+								"linkedService": {
+									"referenceName": "ls_project9_1",
+									"type": "LinkedServiceReference"
+								},
+								"folderPath": "loggingfolderpathcontainer"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-07-18T04:25:12Z"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/GUI_MetadataDrivenCopyTask_cjg_MiddleLevel')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -564,7 +615,8 @@
 				"lastPublishTime": "2025-07-18T04:28:14Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]"
+				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]",
+				"[concat(variables('factoryId'), '/pipelines/Aggregate_Sales_To_Gold')]"
 			]
 		},
 		{
