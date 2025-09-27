@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyworkspace"
 		},
+		"ls_dessert4all_synapse_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_dessert4all_synapse'"
+		},
 		"ls_for_ADLS_Github_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_for_ADLS_Github'"
@@ -46,6 +50,18 @@
 		"ls_sqlTable_DataFlow_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sqlTable_DataFlow'"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "project9workspace.sql.azuresynapse.net"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "desert4alldedpool"
+		},
+		"ls_dessert4all_synapse_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_for_ADLS_Github_properties_typeProperties_url": {
 			"type": "string",
@@ -144,6 +160,28 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_dessert4all_synapse')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"server": "[parameters('ls_dessert4all_synapse_properties_typeProperties_server')]",
+					"database": "[parameters('ls_dessert4all_synapse_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_dessert4all_synapse_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_dessert4all_synapse_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_for_ADLS_Github')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -634,42 +672,6 @@
 				"typeProperties": {
 					"schema": "SalesLT",
 					"table": "MainControlTable_0st"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GUI_MetadataDrivenCopyTask_0st_DestinationDS')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_GUI_sql_Table_copy",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"cw_schema": {
-						"type": "String"
-					},
-					"cw_table": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "GUI_MetadataDrivenCopyTask_0st_20250726"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().cw_schema",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().cw_table",
-						"type": "Expression"
-					}
 				}
 			},
 			"dependsOn": []

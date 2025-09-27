@@ -21,6 +21,117 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_xlsx_to_sqlTbl')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_xlsx_Source_Dataflow",
+								"type": "DatasetReference"
+							},
+							"name": "JollyGoodxlsx"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_xlsx_Currency_DataFlow",
+								"type": "DatasetReference"
+							},
+							"name": "CurrencyConversionToDollars"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Sink_DF",
+								"type": "DatasetReference"
+							},
+							"name": "SinkTosqlTable"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filterMonthTotal"
+						},
+						{
+							"name": "ConvertCurrencyToUSD"
+						},
+						{
+							"name": "LookupCurrencyUSD"
+						},
+						{
+							"name": "derivedColumnTotal"
+						},
+						{
+							"name": "SelectTargetColumn"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Period as date,",
+						"          Product as string,",
+						"          {Unit Price} as double,",
+						"          Currency as string,",
+						"          {Units Sold} as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> JollyGoodxlsx",
+						"source(output(",
+						"          FromCurrency as string,",
+						"          ToCurrency as string,",
+						"          Date as date,",
+						"          ExchangeRate as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CurrencyConversionToDollars",
+						"JollyGoodxlsx filter(Product!='Month Total') ~> filterMonthTotal",
+						"CurrencyConversionToDollars filter(ToCurrency==\"USD\") ~> ConvertCurrencyToUSD",
+						"filterMonthTotal, ConvertCurrencyToUSD lookup(Period == Date",
+						"     && Currency == FromCurrency,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> LookupCurrencyUSD",
+						"LookupCurrencyUSD derive(TotalAmountUSD = round({Unit Price}*{Units Sold}*ExchangeRate, 2)) ~> derivedColumnTotal",
+						"derivedColumnTotal select(mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          Date,",
+						"          ExchangeRate,",
+						"          TotalAmountUSD",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectTargetColumn",
+						"SelectTargetColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Product,",
+						"          {Unit Price},",
+						"          {Units Sold},",
+						"          Date,",
+						"          ExchangeRate,",
+						"          TotalAmountUSD",
+						"     )) ~> SinkTosqlTable"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Aggregate_Sales_To_Gold')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -278,7 +389,9 @@
 				"annotations": [],
 				"lastPublishTime": "2025-07-13T15:05:32Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_xlsx_to_sqlTbl')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Trigger_Practice_Projects')]",

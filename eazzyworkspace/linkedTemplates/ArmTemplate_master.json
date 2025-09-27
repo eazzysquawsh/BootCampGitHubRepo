@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_GUI_sql_Table_copy'"
 		},
+		"ls_GitHub_Source_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_GitHub_Source'"
+		},
 		"ls_Github_sqlTable_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_Github_sqlTable'"
@@ -192,6 +196,18 @@
 			"defaultValue": "eazzyfunctiondb_2025-07-25T22-43Z"
 		},
 		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
+		"ls_GitHub_Source_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_GitHub_Source_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_GitHub_Source_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
 		},
@@ -423,6 +439,9 @@
 					"ls_GUI_sql_Table_copy_password": {
 						"value": "[parameters('ls_GUI_sql_Table_copy_password')]"
 					},
+					"ls_GitHub_Source_password": {
+						"value": "[parameters('ls_GitHub_Source_password')]"
+					},
 					"ls_Github_sqlTable_password": {
 						"value": "[parameters('ls_Github_sqlTable_password')]"
 					},
@@ -446,9 +465,6 @@
 					},
 					"ls_csv_sink_files_accountKey": {
 						"value": "[parameters('ls_csv_sink_files_accountKey')]"
-					},
-					"ls_dessert4all_synapse_password": {
-						"value": "[parameters('ls_dessert4all_synapse_password')]"
 					},
 					"LS_Practice2_properties_typeProperties_url": {
 						"value": "[parameters('LS_Practice2_properties_typeProperties_url')]"
@@ -501,6 +517,15 @@
 					"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
 						"value": "[parameters('ls_GUI_sql_Table_copy_properties_typeProperties_userName')]"
 					},
+					"ls_GitHub_Source_properties_typeProperties_server": {
+						"value": "[parameters('ls_GitHub_Source_properties_typeProperties_server')]"
+					},
+					"ls_GitHub_Source_properties_typeProperties_database": {
+						"value": "[parameters('ls_GitHub_Source_properties_typeProperties_database')]"
+					},
+					"ls_GitHub_Source_properties_typeProperties_userName": {
+						"value": "[parameters('ls_GitHub_Source_properties_typeProperties_userName')]"
+					},
 					"ls_Github_sqlTable_properties_typeProperties_server": {
 						"value": "[parameters('ls_Github_sqlTable_properties_typeProperties_server')]"
 					},
@@ -542,15 +567,6 @@
 					},
 					"ls_csv_sink_files_properties_typeProperties_url": {
 						"value": "[parameters('ls_csv_sink_files_properties_typeProperties_url')]"
-					},
-					"ls_dessert4all_synapse_properties_typeProperties_server": {
-						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_server')]"
-					},
-					"ls_dessert4all_synapse_properties_typeProperties_database": {
-						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_database')]"
-					},
-					"ls_dessert4all_synapse_properties_typeProperties_userName": {
-						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -569,6 +585,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_dessert4all_synapse_password": {
+						"value": "[parameters('ls_dessert4all_synapse_password')]"
 					},
 					"ls_for_ADLS_Github_accountKey": {
 						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
@@ -599,6 +618,15 @@
 					},
 					"ls_sqlTable_DataFlow_password": {
 						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
+					},
+					"ls_dessert4all_synapse_properties_typeProperties_server": {
+						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_server')]"
+					},
+					"ls_dessert4all_synapse_properties_typeProperties_database": {
+						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_database')]"
+					},
+					"ls_dessert4all_synapse_properties_typeProperties_userName": {
+						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_userName')]"
 					},
 					"ls_for_ADLS_Github_properties_typeProperties_url": {
 						"value": "[parameters('ls_for_ADLS_Github_properties_typeProperties_url')]"
