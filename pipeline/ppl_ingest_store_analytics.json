@@ -54,14 +54,7 @@
 			{
 				"name": "Lookup",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "Copy_Customer_analytic_to_Parquet",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -79,13 +72,7 @@
 					},
 					"dataset": {
 						"referenceName": "ds_Github_sqlTable",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": {
-								"value": "@activity('Copy_Customer_analytic_to_Parquet').output",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
@@ -93,14 +80,9 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Lookup",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -148,13 +130,7 @@
 							"inputs": [
 								{
 									"referenceName": "ds_Github_sqlTable",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@item().Table_Name",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
