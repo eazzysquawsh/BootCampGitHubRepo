@@ -1,0 +1,12 @@
+{
+	"name": "ds_Github_sqlTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_Github_sqlTable",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
