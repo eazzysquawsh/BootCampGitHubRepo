@@ -720,12 +720,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"Trigger_Practice_Projects_properties_typeProperties_scope": {
-						"value": "[parameters('Trigger_Practice_Projects_properties_typeProperties_scope')]"
-					},
-					"Trigger_yye_properties_pipeline_parameters_windowStart": {
-						"value": "[parameters('Trigger_yye_properties_pipeline_parameters_windowStart')]"
 					}
 				}
 			},
@@ -746,6 +740,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Trigger_Practice_Projects_properties_typeProperties_scope": {
+						"value": "[parameters('Trigger_Practice_Projects_properties_typeProperties_scope')]"
+					},
+					"Trigger_yye_properties_pipeline_parameters_windowStart": {
+						"value": "[parameters('Trigger_yye_properties_pipeline_parameters_windowStart')]"
 					}
 				}
 			},
