@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_GUI_sql_Table_copy'"
 		},
+		"ls_Github_sqlTable_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_Github_sqlTable'"
+		},
 		"ls_Practice_DF_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_Practice_DF'"
@@ -188,6 +192,18 @@
 			"defaultValue": "eazzyfunctiondb_2025-07-25T22-43Z"
 		},
 		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
 		},
@@ -2759,6 +2775,51 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "Lookup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select * \nfrom  information_schema.tables\nwhere TABLE_NAME IN ('products', 'stores', 'transactions')",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_Github_sqlTable",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Copy_sqlTable_to_Parquet",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"enableStaging": false
+						}
 					}
 				],
 				"policy": {
@@ -2768,7 +2829,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_Github_json_project2')]",
-				"[concat(variables('factoryId'), '/datasets/ds_Github_Parquet_Project2')]"
+				"[concat(variables('factoryId'), '/datasets/ds_Github_Parquet_Project2')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Github_sqlTable')]"
 			]
 		},
 		{
@@ -4086,6 +4148,24 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_for_HTTPS_GitHub')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_Github_sqlTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_Github_sqlTable",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_Github_sqlTable')]"
 			]
 		},
 		{
@@ -5743,6 +5823,28 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('ls_GUI_sql_Table_copy_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_Github_sqlTable')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_Github_sqlTable_properties_typeProperties_server')]",
+					"database": "[parameters('ls_Github_sqlTable_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_Github_sqlTable_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_Github_sqlTable_password')]"
 					}
 				}
 			},

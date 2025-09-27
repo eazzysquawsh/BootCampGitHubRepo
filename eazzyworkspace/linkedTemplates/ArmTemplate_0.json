@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_GUI_sql_Table_copy'"
 		},
+		"ls_Github_sqlTable_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_Github_sqlTable'"
+		},
 		"ls_Practice_DF_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_Practice_DF'"
@@ -82,10 +86,6 @@
 		"ls_dessert4all_synapse_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_dessert4all_synapse'"
-		},
-		"ls_for_ADLS_Github_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'ls_for_ADLS_Github'"
 		},
 		"LS_Practice2_properties_typeProperties_url": {
 			"type": "string",
@@ -155,6 +155,18 @@
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
 		},
+		"ls_Github_sqlTable_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
 		"ls_Practice_DF_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
@@ -210,10 +222,6 @@
 		"ls_dessert4all_synapse_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
-		},
-		"ls_for_ADLS_Github_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -420,6 +428,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_Github_sqlTable')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_Github_sqlTable_properties_typeProperties_server')]",
+					"database": "[parameters('ls_Github_sqlTable_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_Github_sqlTable_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_Github_sqlTable_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_Practice_DF')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -565,23 +595,6 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('ls_dessert4all_synapse_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ls_for_ADLS_Github')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('ls_for_ADLS_Github_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
 					}
 				}
 			},

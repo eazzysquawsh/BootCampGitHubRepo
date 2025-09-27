@@ -38,6 +38,9 @@
 		"ls_GUI_sql_Table_copy_password": {
 			"value": ""
 		},
+		"ls_Github_sqlTable_password": {
+			"value": ""
+		},
 		"ls_Practice_DF_accountKey": {
 			"value": ""
 		},
@@ -141,6 +144,15 @@
 			"value": "eazzyfunctiondb_2025-07-25T22-43Z"
 		},
 		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_server": {
+			"value": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_database": {
+			"value": "eazzysqldb"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_userName": {
 			"value": "eazzysquawsh"
 		},
 		"ls_Practice_DF_properties_typeProperties_url": {

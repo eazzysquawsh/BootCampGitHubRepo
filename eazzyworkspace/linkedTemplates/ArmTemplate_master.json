@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_GUI_sql_Table_copy'"
 		},
+		"ls_Github_sqlTable_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_Github_sqlTable'"
+		},
 		"ls_Practice_DF_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_Practice_DF'"
@@ -188,6 +192,18 @@
 			"defaultValue": "eazzyfunctiondb_2025-07-25T22-43Z"
 		},
 		"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_Github_sqlTable_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "eazzysquawsh"
 		},
@@ -407,6 +423,9 @@
 					"ls_GUI_sql_Table_copy_password": {
 						"value": "[parameters('ls_GUI_sql_Table_copy_password')]"
 					},
+					"ls_Github_sqlTable_password": {
+						"value": "[parameters('ls_Github_sqlTable_password')]"
+					},
 					"ls_Practice_DF_accountKey": {
 						"value": "[parameters('ls_Practice_DF_accountKey')]"
 					},
@@ -430,9 +449,6 @@
 					},
 					"ls_dessert4all_synapse_password": {
 						"value": "[parameters('ls_dessert4all_synapse_password')]"
-					},
-					"ls_for_ADLS_Github_accountKey": {
-						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
 					},
 					"LS_Practice2_properties_typeProperties_url": {
 						"value": "[parameters('LS_Practice2_properties_typeProperties_url')]"
@@ -485,6 +501,15 @@
 					"ls_GUI_sql_Table_copy_properties_typeProperties_userName": {
 						"value": "[parameters('ls_GUI_sql_Table_copy_properties_typeProperties_userName')]"
 					},
+					"ls_Github_sqlTable_properties_typeProperties_server": {
+						"value": "[parameters('ls_Github_sqlTable_properties_typeProperties_server')]"
+					},
+					"ls_Github_sqlTable_properties_typeProperties_database": {
+						"value": "[parameters('ls_Github_sqlTable_properties_typeProperties_database')]"
+					},
+					"ls_Github_sqlTable_properties_typeProperties_userName": {
+						"value": "[parameters('ls_Github_sqlTable_properties_typeProperties_userName')]"
+					},
 					"ls_Practice_DF_properties_typeProperties_url": {
 						"value": "[parameters('ls_Practice_DF_properties_typeProperties_url')]"
 					},
@@ -526,9 +551,6 @@
 					},
 					"ls_dessert4all_synapse_properties_typeProperties_userName": {
 						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_userName')]"
-					},
-					"ls_for_ADLS_Github_properties_typeProperties_url": {
-						"value": "[parameters('ls_for_ADLS_Github_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -547,6 +569,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_for_ADLS_Github_accountKey": {
+						"value": "[parameters('ls_for_ADLS_Github_accountKey')]"
 					},
 					"ls_for_DataFlow_accountKey": {
 						"value": "[parameters('ls_for_DataFlow_accountKey')]"
@@ -574,6 +599,9 @@
 					},
 					"ls_sqlTable_DataFlow_password": {
 						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
+					},
+					"ls_for_ADLS_Github_properties_typeProperties_url": {
+						"value": "[parameters('ls_for_ADLS_Github_properties_typeProperties_url')]"
 					},
 					"ls_for_DataFlow_properties_typeProperties_url": {
 						"value": "[parameters('ls_for_DataFlow_properties_typeProperties_url')]"
