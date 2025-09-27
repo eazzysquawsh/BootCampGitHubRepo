@@ -640,20 +640,11 @@
 					"referenceName": "ls_Github_sqlTable",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"TableName": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
+					"schema": "dbo"
 				}
 			},
 			"dependsOn": []
