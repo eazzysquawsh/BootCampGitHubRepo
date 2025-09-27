@@ -1,0 +1,21 @@
+{
+	"name": "ds_Github_Parquet_Project2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_for_ADLS_Github",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "CustomerAnalytics.Parqeut",
+				"folderPath": "bronze",
+				"fileSystem": "storageanalytics"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
