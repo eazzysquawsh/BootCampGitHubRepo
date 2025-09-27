@@ -2793,7 +2793,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select * \nfrom  information_schema.tables\nwhere TABLE_NAME IN ('products', 'stores', 'transactions')",
+								"sqlReaderQuery": "select * \nfrom  information_schema.tables\nwhere TABLE_NAME IN ('products', 'shop', 'transactions')",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
