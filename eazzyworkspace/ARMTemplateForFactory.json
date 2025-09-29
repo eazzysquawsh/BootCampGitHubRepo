@@ -39,6 +39,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_4_csv_copy_tosqldb_practice'"
 		},
+		"ls_4_scd_dataflow_source_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_4_scd_dataflow_source'"
+		},
+		"ls_4_scd_sqldb_link_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_4_scd_sqldb_link'"
+		},
 		"ls_Dessert4all_Practice2_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_Dessert4all_Practice2'"
@@ -170,6 +178,18 @@
 		"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 			"type": "string",
@@ -1876,6 +1896,52 @@
 				"[concat(variables('factoryId'), '/pipelines/ppl_Aggregate_Sales_To_Gold_Practice2')]",
 				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]",
 				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Test_SCD1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflowscd",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "std_info_scd",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"blobcsv": {},
+									"sqldb": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/std_info_scd')]"
 			]
 		},
 		{
@@ -4013,6 +4079,82 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_4_scd_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_4_scd_dataflow_source",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Student SCD info.csv",
+						"container": "student-scd-info"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "stdid",
+						"type": "String"
+					},
+					{
+						"name": "stdname",
+						"type": "String"
+					},
+					{
+						"name": "location",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_4_scd_dataflow_source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_4_scd_sqldb_sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_4_scd_sqldb_link",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "stdid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "stdname",
+						"type": "varchar"
+					},
+					{
+						"name": "location",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "student_scd_info"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_4_scd_sqldb_link')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_4_unzipped_folder')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -5891,6 +6033,41 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_4_scd_dataflow_source')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_4_scd_dataflow_source_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_4_scd_sqldb_link')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_server')]",
+					"database": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_4_scd_sqldb_link_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_Dessert4all_Practice2')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -6960,6 +7137,74 @@
 				"[concat(variables('factoryId'), '/datasets/ds_xlsx_Source_Dataflow')]",
 				"[concat(variables('factoryId'), '/datasets/ds_xlsx_Currency_DataFlow')]",
 				"[concat(variables('factoryId'), '/datasets/ds_Sink_DF')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/std_info_scd')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_dataflow",
+								"type": "DatasetReference"
+							},
+							"name": "blobcsv"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_sqldb_sink",
+								"type": "DatasetReference"
+							},
+							"name": "sqldb"
+						}
+					],
+					"transformations": [
+						{
+							"name": "alterRowscd"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> blobcsv",
+						"blobcsv alterRow(upsertIf(1==1)) ~> alterRowscd",
+						"alterRowscd sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          stdid,",
+						"          stdname,",
+						"          location",
+						"     )) ~> sqldb"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_4_scd_dataflow')]",
+				"[concat(variables('factoryId'), '/datasets/ds_4_scd_sqldb_sink')]"
 			]
 		}
 	]

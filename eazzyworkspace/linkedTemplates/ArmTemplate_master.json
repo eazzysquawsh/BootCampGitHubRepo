@@ -39,6 +39,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_4_csv_copy_tosqldb_practice'"
 		},
+		"ls_4_scd_dataflow_source_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_4_scd_dataflow_source'"
+		},
+		"ls_4_scd_sqldb_link_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_4_scd_sqldb_link'"
+		},
 		"ls_Dessert4all_Practice2_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_Dessert4all_Practice2'"
@@ -170,6 +178,18 @@
 		"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 			"type": "string",
@@ -430,6 +450,12 @@
 					"ls_4_csv_copy_tosqldb_practice_accountKey": {
 						"value": "[parameters('ls_4_csv_copy_tosqldb_practice_accountKey')]"
 					},
+					"ls_4_scd_dataflow_source_connectionString": {
+						"value": "[parameters('ls_4_scd_dataflow_source_connectionString')]"
+					},
+					"ls_4_scd_sqldb_link_password": {
+						"value": "[parameters('ls_4_scd_sqldb_link_password')]"
+					},
 					"ls_Dessert4all_Practice2_password": {
 						"value": "[parameters('ls_Dessert4all_Practice2_password')]"
 					},
@@ -460,12 +486,6 @@
 					"ls_Zipped_Folder_Practice_accountKey": {
 						"value": "[parameters('ls_Zipped_Folder_Practice_accountKey')]"
 					},
-					"ls_adls_adf_copy_accountKey": {
-						"value": "[parameters('ls_adls_adf_copy_accountKey')]"
-					},
-					"ls_csv_sink_files_accountKey": {
-						"value": "[parameters('ls_csv_sink_files_accountKey')]"
-					},
 					"LS_Practice2_properties_typeProperties_url": {
 						"value": "[parameters('LS_Practice2_properties_typeProperties_url')]"
 					},
@@ -495,6 +515,15 @@
 					},
 					"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
 						"value": "[parameters('ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url')]"
+					},
+					"ls_4_scd_sqldb_link_properties_typeProperties_server": {
+						"value": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_server')]"
+					},
+					"ls_4_scd_sqldb_link_properties_typeProperties_database": {
+						"value": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_database')]"
+					},
+					"ls_4_scd_sqldb_link_properties_typeProperties_userName": {
+						"value": "[parameters('ls_4_scd_sqldb_link_properties_typeProperties_userName')]"
 					},
 					"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 						"value": "[parameters('ls_Dessert4all_Practice2_properties_typeProperties_server')]"
@@ -561,12 +590,6 @@
 					},
 					"ls_Zipped_Folder_Practice_properties_typeProperties_url": {
 						"value": "[parameters('ls_Zipped_Folder_Practice_properties_typeProperties_url')]"
-					},
-					"ls_adls_adf_copy_properties_typeProperties_url": {
-						"value": "[parameters('ls_adls_adf_copy_properties_typeProperties_url')]"
-					},
-					"ls_csv_sink_files_properties_typeProperties_url": {
-						"value": "[parameters('ls_csv_sink_files_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -585,6 +608,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ls_adls_adf_copy_accountKey": {
+						"value": "[parameters('ls_adls_adf_copy_accountKey')]"
+					},
+					"ls_csv_sink_files_accountKey": {
+						"value": "[parameters('ls_csv_sink_files_accountKey')]"
 					},
 					"ls_dessert4all_synapse_password": {
 						"value": "[parameters('ls_dessert4all_synapse_password')]"
@@ -618,6 +647,12 @@
 					},
 					"ls_sqlTable_DataFlow_password": {
 						"value": "[parameters('ls_sqlTable_DataFlow_password')]"
+					},
+					"ls_adls_adf_copy_properties_typeProperties_url": {
+						"value": "[parameters('ls_adls_adf_copy_properties_typeProperties_url')]"
+					},
+					"ls_csv_sink_files_properties_typeProperties_url": {
+						"value": "[parameters('ls_csv_sink_files_properties_typeProperties_url')]"
 					},
 					"ls_dessert4all_synapse_properties_typeProperties_server": {
 						"value": "[parameters('ls_dessert4all_synapse_properties_typeProperties_server')]"

@@ -29,6 +29,12 @@
 		"ls_4_csv_copy_tosqldb_practice_accountKey": {
 			"value": ""
 		},
+		"ls_4_scd_dataflow_source_connectionString": {
+			"value": ""
+		},
+		"ls_4_scd_sqldb_link_password": {
+			"value": ""
+		},
 		"ls_Dessert4all_Practice2_password": {
 			"value": ""
 		},
@@ -127,6 +133,15 @@
 		},
 		"ls_4_csv_copy_tosqldb_practice_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_server": {
+			"value": "eazzysqldbserver.database.windows.net"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_database": {
+			"value": "eazzysqldb"
+		},
+		"ls_4_scd_sqldb_link_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
 		},
 		"ls_Dessert4all_Practice2_properties_typeProperties_server": {
 			"value": "project9workspace.sql.azuresynapse.net"
