@@ -1,0 +1,12 @@
+{
+	"name": "ls_4_scd_dataflow_source",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=blobstrg4scd;EndpointSuffix=core.windows.net;",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDIwMzlGQUE3LUVENTctNEY3Ri04OTQxLTU1N0E1RUNCRDFBRl82MTRiMTc3Ny05MWZjLTQ2MWYtOWI0Yi1jMzUwZTFjZTZhMzEiDQp9"
+		}
+	}
+}
