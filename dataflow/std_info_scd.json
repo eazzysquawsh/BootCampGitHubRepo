@@ -1,0 +1,62 @@
+{
+	"name": "std_info_scd",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_4_scd_dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "blobcsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_4_scd_sqldb_sink",
+						"type": "DatasetReference"
+					},
+					"name": "sqldb"
+				}
+			],
+			"transformations": [
+				{
+					"name": "alterRowscd"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          stdid as integer,",
+				"          stdname as string,",
+				"          location as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> blobcsv",
+				"blobcsv alterRow(upsertIf(1==1)) ~> alterRowscd",
+				"alterRowscd sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          stdid as integer,",
+				"          stdname as string,",
+				"          location as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          stdid,",
+				"          stdname,",
+				"          location",
+				"     )) ~> sqldb"
+			]
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"name": "ds_4_scd_sqldb_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_4_scd_sqldb_link",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "stdid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "stdname",
+				"type": "varchar"
+			},
+			{
+				"name": "location",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "student_scd_info"
+		}
+	}
+}

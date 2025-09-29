@@ -1,0 +1,36 @@
+{
+	"name": "ds_4_scd_dataflow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_4_scd_dataflow_source",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Student SCD info.csv",
+				"container": "student-scd-info"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "stdid",
+				"type": "String"
+			},
+			{
+				"name": "stdname",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			}
+		]
+	}
+}
