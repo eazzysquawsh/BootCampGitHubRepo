@@ -1,0 +1,88 @@
+{
+	"name": "dataflow_scd_Type2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_4_scd_dataflow",
+						"type": "DatasetReference"
+					},
+					"name": "blobcsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlSCD",
+						"type": "DatasetReference"
+					},
+					"name": "Azuresqlsource",
+					"description": "To view data in the existing Target table prior to the New Target table (Look Up Value)"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_4_scd_sqldb_sink",
+						"type": "DatasetReference"
+					},
+					"name": "Azuresqlsink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedIsCurrentColumn"
+				},
+				{
+					"name": "selectforpreviewing"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          stdid as integer,",
+				"          stdname as string,",
+				"          location as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> blobcsv",
+				"source(output(",
+				"          std_key as integer,",
+				"          std__id as integer,",
+				"          std_name as string,",
+				"          Location as string,",
+				"          isCurrent as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Azuresqlsource",
+				"blobcsv derive(isCurrent = 1) ~> derivedIsCurrentColumn",
+				"Azuresqlsource select(mapColumn(",
+				"          DB_Sur_key = std_key,",
+				"          DB_Std__id = std__id,",
+				"          DB_Std_name = std_name,",
+				"          DB_Location = Location,",
+				"          DB_IsCurrent = isCurrent",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectforpreviewing",
+				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          stdid as integer,",
+				"          stdname as string,",
+				"          location as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1"
+			]
+		}
+	}
+}

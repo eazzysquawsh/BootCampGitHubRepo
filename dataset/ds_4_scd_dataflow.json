@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Student_info_scd2.csv",
+				"fileName": "Student _info_scd2.csv",
 				"container": "student-scd-info"
 			},
 			"columnDelimiter": ",",

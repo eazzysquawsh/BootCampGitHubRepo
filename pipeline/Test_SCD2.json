@@ -1,9 +1,9 @@
 {
-	"name": "Test_SCD1",
+	"name": "Test_SCD2",
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflowscd",
+				"name": "std_info_scd2",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "std_info_scd",
+						"referenceName": "dataflow_scd_Type2",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -28,7 +28,7 @@
 			}
 		],
 		"folder": {
-			"name": "SCD/SCD1"
+			"name": "SCD/SCD2"
 		},
 		"annotations": []
 	}

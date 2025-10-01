@@ -1,0 +1,40 @@
+{
+	"name": "AzureSqlSCD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls__AzSQL_SCD",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "std_key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "std__id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "std_name",
+				"type": "varchar"
+			},
+			{
+				"name": "Location",
+				"type": "varchar"
+			},
+			{
+				"name": "isCurrent",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "student_scd_info_type2"
+		}
+	}
+}
