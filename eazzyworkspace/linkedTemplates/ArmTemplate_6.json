@@ -21,6 +21,150 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ppl_to_unzip_dataset_folder')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_to_unzip_from_landing_to_Bronze",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings",
+									"compressionProperties": {
+										"type": "ZipDeflateReadSettings"
+									}
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_4_landing_zipped",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_4_unzipped_folder",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Aggregate_Sales_To_Gold')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver_to_gold",
+								"type": "DatasetReference"
+							},
+							"name": "SilvertoGold"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Gold",
+								"type": "DatasetReference"
+							},
+							"name": "Gold"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DessertSilvertoGold",
+							"description": "Total revenue per CustomerID"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SalesMonth as date,",
+						"          Retailer as string,",
+						"          Product as string,",
+						"          SalesValueUSD as double,",
+						"          UnitsSold as integer,",
+						"          Revenue as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> SilvertoGold",
+						"SilvertoGold aggregate(groupBy(Product),",
+						"     TotalRevenue = sum(Revenue)) ~> DessertSilvertoGold",
+						"DessertSilvertoGold sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Product as string,",
+						"          {Total Revenue} as double",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     staged: true,",
+						"     allowCopyCommand: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> Gold"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Transform_Sales_To_Silver')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -325,6 +469,97 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_scd_Type2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_dataflow",
+								"type": "DatasetReference"
+							},
+							"name": "blobcsv"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlSCD",
+								"type": "DatasetReference"
+							},
+							"name": "Azuresqlsource",
+							"description": "To view data in the existing Target table prior to the New Target table (Look Up Value)"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_sqldb_sink",
+								"type": "DatasetReference"
+							},
+							"name": "Azuresqlsink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedIsCurrentColumn"
+						},
+						{
+							"name": "selectforpreviewing"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> blobcsv",
+						"source(output(",
+						"          std_key as integer,",
+						"          std__id as integer,",
+						"          std_name as string,",
+						"          Location as string,",
+						"          isCurrent as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> Azuresqlsource",
+						"blobcsv derive(isCurrent = 1) ~> derivedIsCurrentColumn",
+						"Azuresqlsource select(mapColumn(",
+						"          DB_Sur_key = std_key,",
+						"          DB_Std__id = std__id,",
+						"          DB_Std_name = std_name,",
+						"          DB_Location = Location,",
+						"          DB_IsCurrent = isCurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectforpreviewing",
+						"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow_xlsx_to_sqlTbl')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -550,7 +785,9 @@
 				"annotations": [],
 				"lastPublishTime": "2025-07-18T04:25:12Z"
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Aggregate_Sales_To_Gold')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GUI_MetadataDrivenCopyTask_cjg_MiddleLevel')]",
@@ -710,10 +947,63 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "SCD/SCD1"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/std_info_scd')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Test_SCD2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "std_info_scd2",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_scd_Type2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"blobcsv": {},
+									"Azuresqlsource": {},
+									"Azuresqlsink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "SCD/SCD2"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_scd_Type2')]"
 			]
 		},
 		{
@@ -1287,38 +1577,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Transform_Sales_To_Silver')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Trigger_cjg')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "GUI_MetadataDrivenCopyTask_cjg_TopLevel",
-						"type": "PipelineReference"
-					},
-					"parameters": {}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Hour",
-					"interval": 24,
-					"startTime": "2025-07-25T10:55:00Z",
-					"endTime": "2025-07-27T10:55:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/GUI_MetadataDrivenCopyTask_cjg_TopLevel')]"
 			]
 		}
 	]

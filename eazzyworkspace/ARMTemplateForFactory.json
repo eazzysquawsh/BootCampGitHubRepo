@@ -87,6 +87,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_Zipped_Folder_Practice'"
 		},
+		"ls__AzSQL_SCD_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls__AzSQL_SCD'"
+		},
 		"ls_adls_adf_copy_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_adf_copy'"
@@ -278,6 +282,18 @@
 		"ls_Zipped_Folder_Practice_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_adls_adf_copy_properties_typeProperties_url": {
 			"type": "string",
@@ -1938,10 +1954,63 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "SCD/SCD1"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/std_info_scd')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Test_SCD2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "std_info_scd2",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow_scd_Type2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"blobcsv": {},
+									"Azuresqlsource": {},
+									"Azuresqlsink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "SCD/SCD2"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow_scd_Type2')]"
 			]
 		},
 		{
@@ -3327,6 +3396,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlSCD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls__AzSQL_SCD",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "std_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "std__id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "std_name",
+						"type": "varchar"
+					},
+					{
+						"name": "Location",
+						"type": "varchar"
+					},
+					{
+						"name": "isCurrent",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "student_scd_info_type2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls__AzSQL_SCD')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_ds_Practice_xlsx')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4092,7 +4206,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Student SCD info.csv",
+						"fileName": "Student _info_scd2.csv",
 						"container": "student-scd-info"
 					},
 					"columnDelimiter": ",",
@@ -6268,6 +6382,28 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls__AzSQL_SCD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls__AzSQL_SCD_properties_typeProperties_server')]",
+					"database": "[parameters('ls__AzSQL_SCD_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls__AzSQL_SCD_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls__AzSQL_SCD_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_adls_adf_copy')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -7022,6 +7158,101 @@
 				"[concat(variables('factoryId'), '/datasets/DF_ds_Practice_xlsx')]",
 				"[concat(variables('factoryId'), '/datasets/ds_Practice_ExchangeRate')]",
 				"[concat(variables('factoryId'), '/datasets/sink_df_practice')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow_scd_Type2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_dataflow",
+								"type": "DatasetReference"
+							},
+							"name": "blobcsv"
+						},
+						{
+							"dataset": {
+								"referenceName": "AzureSqlSCD",
+								"type": "DatasetReference"
+							},
+							"name": "Azuresqlsource",
+							"description": "To view data in the existing Target table prior to the New Target table (Look Up Value)"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_4_scd_sqldb_sink",
+								"type": "DatasetReference"
+							},
+							"name": "Azuresqlsink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedIsCurrentColumn"
+						},
+						{
+							"name": "selectforpreviewing"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> blobcsv",
+						"source(output(",
+						"          std_key as integer,",
+						"          std__id as integer,",
+						"          std_name as string,",
+						"          Location as string,",
+						"          isCurrent as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> Azuresqlsource",
+						"blobcsv derive(isCurrent = 1) ~> derivedIsCurrentColumn",
+						"Azuresqlsource select(mapColumn(",
+						"          DB_Sur_key = std_key,",
+						"          DB_Std__id = std__id,",
+						"          DB_Std_name = std_name,",
+						"          DB_Location = Location,",
+						"          DB_IsCurrent = isCurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectforpreviewing",
+						"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          stdid as integer,",
+						"          stdname as string,",
+						"          location as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_4_scd_dataflow')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlSCD')]",
+				"[concat(variables('factoryId'), '/datasets/ds_4_scd_sqldb_sink')]"
 			]
 		},
 		{

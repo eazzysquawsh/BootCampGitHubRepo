@@ -65,6 +65,9 @@
 		"ls_Zipped_Folder_Practice_accountKey": {
 			"value": ""
 		},
+		"ls__AzSQL_SCD_password": {
+			"value": ""
+		},
 		"ls_adls_adf_copy_accountKey": {
 			"value": ""
 		},
@@ -208,6 +211,15 @@
 		},
 		"ls_Zipped_Folder_Practice_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_server": {
+			"value": "eazzysqldbserver.database.windows.net"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_database": {
+			"value": "eazzysqldb"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_userName": {
+			"value": "eazzysquawsh"
 		},
 		"ls_adls_adf_copy_properties_typeProperties_url": {
 			"value": "https://eazzystrgacc.dfs.core.windows.net/"

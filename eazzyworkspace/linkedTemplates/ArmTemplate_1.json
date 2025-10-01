@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "eazzyworkspace"
 		},
+		"ls__AzSQL_SCD_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls__AzSQL_SCD'"
+		},
 		"ls_adls_adf_copy_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_adls_adf_copy'"
@@ -58,6 +62,18 @@
 		"ls_sqlTable_DataFlow_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_sqlTable_DataFlow'"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "eazzysqldbserver.database.windows.net"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "eazzysqldb"
+		},
+		"ls__AzSQL_SCD_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "eazzysquawsh"
 		},
 		"ls_adls_adf_copy_properties_typeProperties_url": {
 			"type": "string",
@@ -176,6 +192,28 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ls__AzSQL_SCD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls__AzSQL_SCD_properties_typeProperties_server')]",
+					"database": "[parameters('ls__AzSQL_SCD_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls__AzSQL_SCD_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls__AzSQL_SCD_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/ls_adls_adf_copy')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -448,6 +486,51 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlSCD')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls__AzSQL_SCD",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "std_key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "std__id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "std_name",
+						"type": "varchar"
+					},
+					{
+						"name": "Location",
+						"type": "varchar"
+					},
+					{
+						"name": "isCurrent",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "student_scd_info_type2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls__AzSQL_SCD')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DF_ds_Practice_xlsx')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -618,55 +701,6 @@
 				]
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DestinationDataset_ew3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_project9_1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "projectpracticecontainer"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DestinationDataset_lrx')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_project9_1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "projectpracticecontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_project9_1')]"
-			]
 		}
 	]
 }
