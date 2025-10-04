@@ -27,6 +27,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "Azuresqlsink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlSCD",
+						"type": "DatasetReference"
+					},
+					"name": "Updatesink"
 				}
 			],
 			"transformations": [
@@ -49,7 +56,7 @@
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "alterRow1"
+					"name": "alterRow"
 				}
 			],
 			"scriptLines": [
@@ -97,7 +104,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
 				"DataWeNeed derive(DB_IsCurrent = 0) ~> derivedColumn1",
-				"derivedColumn1 alterRow(updateIf(DB_IsCurrent)) ~> alterRow1",
+				"derivedColumn1 alterRow(updateIf(DB_IsCurrent==0)) ~> alterRow",
 				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -112,7 +119,34 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1"
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1",
+				"alterRow sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          std_key as integer,",
+				"          std__id as integer,",
+				"          std_name as string,",
+				"          Location as string,",
+				"          isCurrent as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['std_key'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          std_key = DB_Sur_key,",
+				"          std__id = DB_Std__id,",
+				"          std_name = DB_Std_name,",
+				"          Location = DB_Location,",
+				"          isCurrent = DB_IsCurrent",
+				"     )) ~> Updatesink"
 			]
 		}
 	}
