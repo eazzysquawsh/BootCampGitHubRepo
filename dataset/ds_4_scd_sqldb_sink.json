@@ -9,17 +9,27 @@
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "stdid",
+				"name": "std_key",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "stdname",
+				"name": "std__id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "std_name",
 				"type": "varchar"
 			},
 			{
-				"name": "location",
+				"name": "Location",
 				"type": "varchar"
+			},
+			{
+				"name": "isCurrent",
+				"type": "int",
+				"precision": 10
 			}
 		],
 		"typeProperties": {
