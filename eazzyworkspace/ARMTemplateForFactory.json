@@ -4247,17 +4247,27 @@
 				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "stdid",
+						"name": "std_key",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "stdname",
+						"name": "std__id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "std_name",
 						"type": "varchar"
 					},
 					{
-						"name": "location",
+						"name": "Location",
 						"type": "varchar"
+					},
+					{
+						"name": "isCurrent",
+						"type": "int",
+						"precision": 10
 					}
 				],
 				"typeProperties": {
@@ -7273,9 +7283,11 @@
 						"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          stdid as integer,",
-						"          stdname as string,",
-						"          location as string",
+						"          std_key as integer,",
+						"          std__id as integer,",
+						"          std_name as string,",
+						"          Location as string,",
+						"          isCurrent as integer",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:true,",
@@ -7285,7 +7297,13 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     saveOrder: 2,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> Azuresqlsink1",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          std__id = stdid,",
+						"          std_name = stdname,",
+						"          Location = location,",
+						"          isCurrent",
+						"     )) ~> Azuresqlsink1",
 						"alterRow sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
@@ -7479,9 +7497,11 @@
 						"alterRowscd sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          stdid as integer,",
-						"          stdname as string,",
-						"          location as string",
+						"          std_key as integer,",
+						"          std__id as integer,",
+						"          std_name as string,",
+						"          Location as string,",
+						"          isCurrent as integer",
 						"     ),",
 						"     deletable:false,",
 						"     insertable:false,",
