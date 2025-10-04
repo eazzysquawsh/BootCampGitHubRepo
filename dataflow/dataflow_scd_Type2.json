@@ -34,7 +34,16 @@
 					"name": "derivedIsCurrentColumn"
 				},
 				{
-					"name": "selectforpreviewing"
+					"name": "selectforcomparing"
+				},
+				{
+					"name": "lookuptocompareexistingdata"
+				},
+				{
+					"name": "RetainMatchingValues"
+				},
+				{
+					"name": "DataWeNeed"
 				}
 			],
 			"scriptLines": [
@@ -66,7 +75,21 @@
 				"          DB_IsCurrent = isCurrent",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectforpreviewing",
+				"     skipDuplicateMapOutputs: true) ~> selectforcomparing",
+				"blobcsv, selectforcomparing lookup(stdid == DB_Std__id,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookuptocompareexistingdata",
+				"lookuptocompareexistingdata filter(!isNull(DB_Std__id)) ~> RetainMatchingValues",
+				"RetainMatchingValues select(mapColumn(",
+				"          DB_Sur_key,",
+				"          DB_Std__id,",
+				"          DB_Std_name,",
+				"          DB_Location,",
+				"          DB_IsCurrent",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
 				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
