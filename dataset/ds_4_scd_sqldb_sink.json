@@ -24,7 +24,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "student_scd_info"
+			"table": "student_scd_info_type2"
 		}
 	}
 }
