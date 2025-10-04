@@ -104,7 +104,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
 				"DataWeNeed derive(DB_IsCurrent = 0) ~> derivedColumn1",
-				"derivedColumn1 alterRow(updateIf(DB_IsCurrent==0)) ~> alterRow",
+				"derivedColumn1 alterRow(updateIf(1==1)) ~> alterRow",
 				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
