@@ -44,6 +44,12 @@
 				},
 				{
 					"name": "DataWeNeed"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -90,6 +96,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
+				"DataWeNeed derive(DB_IsCurrent = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(DB_IsCurrent)) ~> alterRow1",
 				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
