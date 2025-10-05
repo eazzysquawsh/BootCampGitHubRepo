@@ -1,6 +1,9 @@
 {
 	"name": "std_info_scd",
 	"properties": {
+		"folder": {
+			"name": "SCD_TYPE2_DATAFLOW"
+		},
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [

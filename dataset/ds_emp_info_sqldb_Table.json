@@ -1,0 +1,40 @@
+{
+	"name": "ds_emp_info_sqldb_Table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_4_scd_sqldb_link",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Sur_Key",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmpID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmpName",
+				"type": "varchar"
+			},
+			{
+				"name": "Location",
+				"type": "varchar"
+			},
+			{
+				"name": "IsCurrent",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Emp_info_SCD_Type2"
+		}
+	}
+}

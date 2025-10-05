@@ -1,0 +1,35 @@
+{
+	"name": "ppl_Emp_info_SCD_Type2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Emp_Info_Data_flow",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Emp_info_dataflow",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "SCD/SCD2"
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,163 @@
+{
+	"name": "Emp_info_dataflow",
+	"properties": {
+		"folder": {
+			"name": "SCD_TYPE2_DATAFLOW"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_emp_info_scd_type2",
+						"type": "DatasetReference"
+					},
+					"name": "blobcsvsource"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_emp_info_sqldb_Table",
+						"type": "DatasetReference"
+					},
+					"name": "Azuresql"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_Azsql_Emp_info_Sink",
+						"type": "DatasetReference"
+					},
+					"name": "csvsqlsink"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_Azsql_Emp_info_Sink",
+						"type": "DatasetReference"
+					},
+					"name": "Azupdatedsqlsink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedIsCurrentColumn"
+				},
+				{
+					"name": "selectforcomparism"
+				},
+				{
+					"name": "lookuptocompareexistingdata"
+				},
+				{
+					"name": "RetainingMatchingValues"
+				},
+				{
+					"name": "DataWeNeed"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EmpId as integer,",
+				"          EmpName as string,",
+				"          Location as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> blobcsvsource",
+				"source(output(",
+				"          Sur_Key as integer,",
+				"          EmpID as integer,",
+				"          EmpName as string,",
+				"          Location as string,",
+				"          IsCurrent as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Azuresql",
+				"blobcsvsource derive(IsCurrent = 1) ~> derivedIsCurrentColumn",
+				"Azuresql select(mapColumn(",
+				"          DB_Sur_Key = Sur_Key,",
+				"          DB_EmpID = EmpID,",
+				"          DB_EmpName = EmpName,",
+				"          DB_Location = Location,",
+				"          DB_IsCurrent = IsCurrent",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectforcomparism",
+				"blobcsvsource, selectforcomparism lookup(EmpId == DB_EmpID,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookuptocompareexistingdata",
+				"lookuptocompareexistingdata filter(!isNull(DB_EmpID)) ~> RetainingMatchingValues",
+				"RetainingMatchingValues select(mapColumn(",
+				"          DB_Sur_Key,",
+				"          DB_EmpID,",
+				"          DB_EmpName,",
+				"          DB_Location,",
+				"          DB_IsCurrent",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
+				"DataWeNeed derive(DB_IsCurrent = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(1==1)) ~> alterRow1",
+				"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Sur_Key as integer,",
+				"          EmpID as integer,",
+				"          EmpName as string,",
+				"          Location as string,",
+				"          IsCurrent as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EmpID = EmpId,",
+				"          EmpName,",
+				"          Location,",
+				"          IsCurrent",
+				"     )) ~> csvsqlsink",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Sur_Key as integer,",
+				"          EmpID as integer,",
+				"          EmpName as string,",
+				"          Location as string,",
+				"          IsCurrent as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['Sur_Key'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Sur_Key = DB_Sur_Key,",
+				"          EmpID = DB_EmpID,",
+				"          EmpName = DB_EmpName,",
+				"          Location = DB_Location,",
+				"          IsCurrent = DB_IsCurrent",
+				"     )) ~> Azupdatedsqlsink"
+			]
+		}
+	}
+}
