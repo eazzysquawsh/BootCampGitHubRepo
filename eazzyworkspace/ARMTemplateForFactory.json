@@ -2269,6 +2269,57 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ppl_Emp_info_SCD_Type2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Emp_Info_Data_flow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Emp_info_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"blobcsvsource": {},
+									"Azuresql": {},
+									"csvsqlsink": {},
+									"Azupdatedsqlsink": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "SCD/SCD2"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Emp_info_dataflow')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ppl_For_Each_Lookup')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4340,6 +4391,51 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_Azsql_Emp_info_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_4_scd_sqldb_link",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Sur_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpName",
+						"type": "varchar"
+					},
+					{
+						"name": "Location",
+						"type": "varchar"
+					},
+					{
+						"name": "IsCurrent",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Emp_info_SCD_Type2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_4_scd_sqldb_link')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_CS_Para')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -5237,6 +5333,92 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_csv_sink_files')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_emp_info_scd_type2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_4_scd_dataflow_source",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Employee _info_scd2.csv",
+						"container": "student-scd-info"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "EmpId",
+						"type": "String"
+					},
+					{
+						"name": "EmpName",
+						"type": "String"
+					},
+					{
+						"name": "Location",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_4_scd_dataflow_source')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_emp_info_sqldb_Table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_4_scd_sqldb_link",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Sur_Key",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmpName",
+						"type": "varchar"
+					},
+					{
+						"name": "Location",
+						"type": "varchar"
+					},
+					{
+						"name": "IsCurrent",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Emp_info_SCD_Type2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_4_scd_sqldb_link')]"
 			]
 		},
 		{
@@ -6856,6 +7038,176 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Emp_info_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "SCD_TYPE2_DATAFLOW"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_emp_info_scd_type2",
+								"type": "DatasetReference"
+							},
+							"name": "blobcsvsource"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_emp_info_sqldb_Table",
+								"type": "DatasetReference"
+							},
+							"name": "Azuresql"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_Azsql_Emp_info_Sink",
+								"type": "DatasetReference"
+							},
+							"name": "csvsqlsink"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_Azsql_Emp_info_Sink",
+								"type": "DatasetReference"
+							},
+							"name": "Azupdatedsqlsink"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedIsCurrentColumn"
+						},
+						{
+							"name": "selectforcomparism"
+						},
+						{
+							"name": "lookuptocompareexistingdata"
+						},
+						{
+							"name": "RetainingMatchingValues"
+						},
+						{
+							"name": "DataWeNeed"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          EmpId as integer,",
+						"          EmpName as string,",
+						"          Location as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> blobcsvsource",
+						"source(output(",
+						"          Sur_Key as integer,",
+						"          EmpID as integer,",
+						"          EmpName as string,",
+						"          Location as string,",
+						"          IsCurrent as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> Azuresql",
+						"blobcsvsource derive(IsCurrent = 1) ~> derivedIsCurrentColumn",
+						"Azuresql select(mapColumn(",
+						"          DB_Sur_Key = Sur_Key,",
+						"          DB_EmpID = EmpID,",
+						"          DB_EmpName = EmpName,",
+						"          DB_Location = Location,",
+						"          DB_IsCurrent = IsCurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectforcomparism",
+						"blobcsvsource, selectforcomparism lookup(EmpId == DB_EmpID,",
+						"     multiple: false,",
+						"     pickup: 'any',",
+						"     broadcast: 'auto')~> lookuptocompareexistingdata",
+						"lookuptocompareexistingdata filter(!isNull(DB_EmpID)) ~> RetainingMatchingValues",
+						"RetainingMatchingValues select(mapColumn(",
+						"          DB_Sur_Key,",
+						"          DB_EmpID,",
+						"          DB_EmpName,",
+						"          DB_Location,",
+						"          DB_IsCurrent",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> DataWeNeed",
+						"DataWeNeed derive(DB_IsCurrent = 0) ~> derivedColumn1",
+						"derivedColumn1 alterRow(updateIf(1==1)) ~> alterRow1",
+						"derivedIsCurrentColumn sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Sur_Key as integer,",
+						"          EmpID as integer,",
+						"          EmpName as string,",
+						"          Location as string,",
+						"          IsCurrent as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          EmpID = EmpId,",
+						"          EmpName,",
+						"          Location,",
+						"          IsCurrent",
+						"     )) ~> csvsqlsink",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Sur_Key as integer,",
+						"          EmpID as integer,",
+						"          EmpName as string,",
+						"          Location as string,",
+						"          IsCurrent as integer",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['Sur_Key'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Sur_Key = DB_Sur_Key,",
+						"          EmpID = DB_EmpID,",
+						"          EmpName = DB_EmpName,",
+						"          Location = DB_Location,",
+						"          IsCurrent = DB_IsCurrent",
+						"     )) ~> Azupdatedsqlsink"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_emp_info_scd_type2')]",
+				"[concat(variables('factoryId'), '/datasets/ds_emp_info_sqldb_Table')]",
+				"[concat(variables('factoryId'), '/datasets/ds_Azsql_Emp_info_Sink')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Transform_Sales_To_Silver')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -7459,6 +7811,9 @@
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"folder": {
+					"name": "SCD_TYPE2_DATAFLOW"
+				},
 				"type": "MappingDataFlow",
 				"typeProperties": {
 					"sources": [
