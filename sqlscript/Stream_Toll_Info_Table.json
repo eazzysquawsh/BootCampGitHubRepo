@@ -1,5 +1,5 @@
 {
-	"name": "SQL script 1",
+	"name": "Stream_Toll_Info_Table",
 	"properties": {
 		"content": {
 			"query": "--CREATE TABLE Stream_Toll_Info (Make VARCHAR (50), Model VARCHAR(50), VehicleType INT, State VARCHAR (5), TollAmount INT)\n\nSELECT * FROM Stream_Toll_Info",
