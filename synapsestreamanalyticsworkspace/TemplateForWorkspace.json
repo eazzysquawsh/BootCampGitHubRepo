@@ -7971,12 +7971,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"name": "[concat(parameters('workspaceName'), '/Stream_Toll_Info_Table')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "--CREATE TABLE Stream_Toll_Info (Make VARCHAR (50), Model VARCHAR(50), VehicleType INT, State VARCHAR (5), TollAmount INT)\n\nSELECT * FROM Stream_Toll_Info",
+					"query": "CREATE TABLE Stream_Toll_Info (Make VARCHAR (50), Model VARCHAR(50), VehicleType INT, State VARCHAR (5), TollAmount INT)\n\nSELECT * FROM Stream_Toll_Info",
 					"metadata": {
 						"language": "sql"
 					},
