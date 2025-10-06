@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "--CREATE TABLE Stream_Toll_Info (Make VARCHAR (50), Model VARCHAR(50), VehicleType INT, State VARCHAR (5), TollAmount INT)\n\nSELECT * FROM Stream_Toll_Info",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "StreamAnalyticsDedsqlPool",
+				"poolName": "StreamAnalyticsDedsqlPool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
