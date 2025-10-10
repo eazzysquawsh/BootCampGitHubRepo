@@ -18,15 +18,16 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "82317c16-99b0-4c50-ae47-cdfb6d3d4236"
+				"spark.autotune.trackingId": "cb1865d9-3f7b-4316-9b79-1e43c70c7ef6"
 			}
 		},
 		"metadata": {
 			"saveOutput": true,
-			"synapse_widget": {
-				"version": "0.1"
-			},
 			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
 			"language_info": {
 				"name": "python"
 			},
@@ -37,14 +38,13 @@
 				"endpoint": "https://synapseq4jvfyh.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkq4jvfyh",
 				"auth": {
 					"type": "AAD",
-					"authResource": "https://dev.azuresynapse.net",
-					"authHeader": null
+					"authResource": "https://dev.azuresynapse.net"
 				},
 				"sparkVersion": "3.4",
 				"nodeCount": 3,
 				"cores": 4,
 				"memory": 28,
-				"extraHeader": null
+				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
 		},
@@ -80,7 +80,8 @@
 					"\n",
 					"# Variable for unique folder name\n",
 					"folderName = uuid.uuid4()"
-				]
+				],
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -104,7 +105,8 @@
 				},
 				"source": [
 					"order_details = spark.read.csv('/data/*.csv', header=True, inferSchema=True)"
-				]
+				],
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -143,7 +145,8 @@
 					"\n",
 					"# Remove the CustomerName field\n",
 					"transformed_df = transformed_df.drop(\"CustomerName\")"
-				]
+				],
+				"execution_count": null
 			},
 			{
 				"cell_type": "markdown",
@@ -176,7 +179,8 @@
 				"source": [
 					"transformed_df.write.mode(\"overwrite\").parquet('/%s' % folderName)\n",
 					"print (\"Transformed data saved in %s!\" % folderName)"
-				]
+				],
+				"execution_count": null
 			}
 		]
 	}
