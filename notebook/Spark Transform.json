@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "33783dd0-09f7-47aa-bcc7-db8b635c15b0"
+				"spark.autotune.trackingId": "a817e7e4-b9d4-46fc-b11d-14fe64bcfa5b"
 			}
 		},
 		"metadata": {
@@ -81,7 +81,7 @@
 					"# Variable for unique folder name\n",
 					"folderName = uuid.uuid4()"
 				],
-				"execution_count": null
+				"execution_count": 5
 			},
 			{
 				"cell_type": "markdown",
@@ -106,7 +106,7 @@
 				"source": [
 					"order_details = spark.read.csv('/data/*.csv', header=True, inferSchema=True)"
 				],
-				"execution_count": null
+				"execution_count": 6
 			},
 			{
 				"cell_type": "markdown",
@@ -146,7 +146,7 @@
 					"# Remove the CustomerName field\n",
 					"transformed_df = transformed_df.drop(\"CustomerName\")"
 				],
-				"execution_count": null
+				"execution_count": 7
 			},
 			{
 				"cell_type": "markdown",
@@ -180,7 +180,7 @@
 					"transformed_df.write.mode(\"overwrite\").parquet('/%s' % folderName)\n",
 					"print (\"Transformed data saved in %s!\" % folderName)"
 				],
-				"execution_count": null
+				"execution_count": 8
 			}
 		]
 	}
